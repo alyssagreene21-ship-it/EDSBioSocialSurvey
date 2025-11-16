@@ -1,826 +1,1108 @@
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <meta content="text/html; charset=UTF-8" http-equiv="content-type">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EDS Biosocial Research Platform</title>
-  <style type="text/css">ol{margin:0;padding:0}table td,table th{padding:0}.c0{color:#000000;font-weight:400;text-decoration:none;vertical-align:baseline;font-size:11pt;font-family:"Arial";font-style:normal}.c1{padding-top:0pt;padding-bottom:0pt;line-height:1.15;orphans:2;widows:2;text-align:left}.c3{background-color:#ffffff;max-width:468pt;padding:72pt 72pt 72pt 72pt}.c2{height:11pt}.title{padding-top:0pt;color:#000000;font-size:26pt;padding-bottom:3pt;font-family:"Arial";line-height:1.15;page-break-after:avoid;orphans:2;widows:2;text-align:left}.subtitle{padding-top:0pt;color:#666666;font-size:15pt;padding-bottom:16pt;font-family:"Arial";line-height:1.15;page-break-after:avoid;orphans:2;widows:2;text-align:left}li{color:#000000;font-size:11pt;font-family:"Arial"}p{margin:0;color:#000000;font-size:11pt;font-family:"Arial"}h1{padding-top:20pt;color:#000000;font-size:20pt;padding-bottom:6pt;font-family:"Arial";line-height:1.15;page-break-after:avoid;orphans:2;widows:2;text-align:left}h2{padding-top:18pt;color:#000000;font-size:16pt;padding-bottom:6pt;font-family:"Arial";line-height:1.15;page-break-after:avoid;orphans:2;widows:2;text-align:left}h3{padding-top:16pt;color:#434343;font-size:14pt;padding-bottom:4pt;font-family:"Arial";line-height:1.15;page-break-after:avoid;orphans:2;widows:2;text-align:left}h4{padding-top:14pt;color:#666666;font-size:12pt;padding-bottom:4pt;font-family:"Arial";line-height:1.15;page-break-after:avoid;orphans:2;widows:2;text-align:left}h5{padding-top:12pt;color:#666666;font-size:11pt;padding-bottom:4pt;font-family:"Arial";line-height:1.15;page-break-after:avoid;orphans:2;widows:2;text-align:left}h6{padding-top:12pt;color:#666666;font-size:11pt;padding-bottom:4pt;font-family:"Arial";line-height:1.15;page-break-after:avoid;font-style:italic;orphans:2;widows:2;text-align:left}</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>EDS Biosocial Research Survey</title>
   <style>
-  /* A responsive, polished UI (kept short here; original includes many styles) */
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-    padding: 20px;
-  }
-  .container { max-width: 1400px; margin: 0 auto; }
-  header { background: white; padding: 30px; border-radius: 20px; margin-bottom: 30px; box-shadow: 0 10px 40px rgba(0,0,0,.2); }
-  h1 { color:#667eea; font-size:2.5em; margin-bottom:10px; }
-  .subtitle { color:#333; font-size:1.1em; line-height:1.6; }
-  .tab-navigation { display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap; }
-  .tab-btn { padding:15px 30px; background:white; border:none; border-radius:10px; cursor:pointer; font-size:1em; font-weight:600; color:#667eea; transition:all .3s ease; box-shadow:0 4px 15px rgba(0,0,0,.1); }
-  .tab-btn:hover { transform: translateY(-2px); box-shadow:0 6px 20px rgba(0,0,0,.15); }
-  .tab-btn.active { background:#667eea; color:white; }
-  .tab-content { display:none; background:white; padding:40px; border-radius:20px; box-shadow:0 10px 40px rgba(0,0,0,.2); }
-  .tab-content.active { display:block; }
-  .form-section { margin-bottom:40px; padding-bottom:40px; border-bottom:2px solid #e0e0e0; }
-  .form-section:last-child { border-bottom:none; }
-  .form-section h2 { color:#667eea; font-size:1.8em; margin-bottom:20px; display:flex; align-items:center; gap:10px; }
-  .section-description { color:#555; margin-bottom:20px; font-style:italic; }
-  .form-group { margin-bottom:25px; }
-  .form-group label { display:block; font-weight:600; color:#333; margin-bottom:8px; font-size:1.05em; }
-  .form-group input[type="text"], .form-group input[type="number"], .form-group select, .form-group textarea { width:100%; padding:12px; border:2px solid #e0e0e0; border-radius:8px; font-size:1em; transition:border-color .3s ease; background:white; color:#333; }
-  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline:none; border-color:#667eea; }
-  .checkbox-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(250px,1fr)); gap:15px; margin-top:10px; }
-  .checkbox-item { display:flex; align-items:flex-start; gap:8px; }
-  .checkbox-other-input { margin-top:8px; margin-left:26px; width:calc(100% - 26px); }
-  .subtype-module { display:none; background:#f8f9fa; padding:30px; border-radius:15px; margin-top:30px; border-left:5px solid #667eea; }
-  .subtype-module.active { display:block; }
-  .submit-btn { background: linear-gradient(135deg,#667eea 0%,#764ba2 100%); color:white; padding:18px 40px; border:none; border-radius:10px; font-size:1.2em; font-weight:600; cursor:pointer; transition:all .3s ease; box-shadow:0 4px 15px rgba(102,126,234,.4); }
-  .submit-btn:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(102,126,234,.6); }
-  .submit-btn:disabled { opacity:.6; cursor:not-allowed; transform:none; }
-  #visualization-container { position:relative; height:400px; background:white; border-radius:15px; overflow:hidden; padding:12px; }
-  #network-canvas { width:100%; height:100%; display:block; }
-  .stats-panel { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:20px; margin-bottom:20px; }
-  .stat-card { background:linear-gradient(135deg,#667eea 0%,#764ba2 100%); color:white; padding:25px; border-radius:15px; box-shadow:0 4px 15px rgba(0,0,0,.1); }
-  .stat-card h3 { font-size:.9em; opacity:.9; margin-bottom:10px; font-weight:500; }
-  .stat-card .stat-value { font-size:2.5em; font-weight:700; }
-  .legend { background:white; padding:20px; border-radius:10px; margin-top:20px; box-shadow:0 2px 10px rgba(0,0,0,.1); }
-  .legend-items { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; }
-  .legend-item { display:flex; align-items:center; gap:10px; }
-  .legend-color { width:20px; height:20px; border-radius:50%; }
-  .tooltip { position:absolute; background:rgba(0,0,0,.9); color:white; padding:10px 15px; border-radius:8px; font-size:.9em; pointer-events:none; z-index:1000; max-width:300px; display:none; }
-  .success-message { background:#4caf50; color:white; padding:20px; border-radius:10px; margin-bottom:20px; display:none; }
-  .alert-box { background:#fff3cd; border-left:4px solid #ffc107; padding:15px; margin-bottom:20px; border-radius:5px; color:#856404; }
-  @media (max-width:768px) {
-    .tab-navigation { flex-direction:column; }
-    .tab-content { padding:20px; }
-    h1 { font-size:1.8em; }
-    .checkbox-grid { grid-template-columns:1fr; }
-  }
+    /* Global layout & typography */
+    :root{
+      --max-width: 980px;
+      --gap: 1rem;
+      --muted: #6b7280;
+      --accent: #0069b4;
+      --bg: #ffffff;
+      --card: #f8fafc;
+      --radius: 8px;
+    }
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: var(--bg);
+      color:#0f172a;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+    .container{
+      max-width:var(--max-width);
+      margin:1.25rem auto;
+      padding:1.25rem;
+    }
+    header{
+      text-align:left;
+      margin-bottom:1rem;
+    }
+    h1{
+      margin:0 0 0.25rem 0;
+      font-size:1.5rem;
+    }
+    p.lead{
+      margin:0;
+      color:var(--muted);
+      font-size:0.95rem;
+    }
+
+    main{
+      margin-top:1rem;
+    }
+    form{
+      display:flex;
+      flex-direction:column;
+      gap:1rem;
+    }
+    section.card{
+      background:var(--card);
+      padding:1rem;
+      border-radius:var(--radius);
+      box-shadow: 0 1px 0 rgba(15,23,42,0.03);
+    }
+    section.card > h2{
+      margin:0 0 0.5rem 0;
+      font-size:1.1rem;
+    }
+    fieldset{
+      border:0;
+      padding:0;
+      margin:0;
+      display:flex;
+      flex-direction:column;
+      gap:0.5rem;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:var(--gap);
+    }
+    @media (max-width:720px){
+      .grid{ grid-template-columns:1fr; }
+    }
+    label{ display:block; font-size:0.95rem; }
+    .small{ font-size:0.875rem; color:var(--muted); }
+    .help{ font-size:0.85rem; color:var(--muted); margin-top:0.25rem; }
+
+    input[type="text"], input[type="number"], textarea, select{
+      width:100%;
+      padding:0.5rem;
+      border:1px solid #e6eef6;
+      border-radius:6px;
+      font-size:0.95rem;
+      background:white;
+      box-sizing:border-box;
+    }
+    textarea{ min-height:100px; resize:vertical; }
+
+    .checkbox-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:0.5rem;
+    }
+    @media (max-width:720px){
+      .checkbox-grid{ grid-template-columns:1fr; }
+    }
+
+    .inline{
+      display:flex;
+      gap:0.75rem;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .inline label{ display:flex; align-items:center; gap:0.5rem; margin:0; }
+    .required-star{ color:#b91c1c; margin-left:0.25rem; }
+
+    .subtle{ font-size:0.85rem; color:var(--muted); }
+
+    .error{
+      color:#b91c1c;
+      font-size:0.9rem;
+      margin-top:0.25rem;
+    }
+
+    .controls{
+      display:flex;
+      gap:0.5rem;
+      align-items:center;
+      justify-content:flex-end;
+    }
+    button{
+      background:var(--accent);
+      color:white;
+      border:0;
+      padding:0.6rem 1rem;
+      border-radius:6px;
+      font-weight:600;
+      cursor:pointer;
+    }
+    button.secondary{
+      background:#f3f4f6;
+      color:#0f172a;
+    }
+    .summary{
+      background:white;
+      padding:1rem;
+      border-radius:8px;
+      border:1px solid #e6eef6;
+      max-height:300px;
+      overflow:auto;
+      white-space:pre-wrap;
+      font-family: Menlo, Monaco, monospace;
+      font-size:0.85rem;
+    }
+
+    .muted-pill{
+      display:inline-block;
+      background:#eef2ff;
+      color:#312e81;
+      padding:0.2rem 0.5rem;
+      border-radius:999px;
+      font-size:0.8rem;
+    }
+
+    /* accessibility focus */
+    input:focus, select:focus, textarea:focus, button:focus {
+      outline: 3px solid rgba(0,105,180,0.12);
+      outline-offset:2px;
+    }
+
+    /* severity row */
+    .severity-row{ display:flex; gap:0.5rem; align-items:center; flex-wrap:wrap; }
+    .severity-row .scale{ display:flex; gap:0.25rem; align-items:center; }
+    .scale label{ font-size:0.85rem; padding:0.25rem 0.4rem; border-radius:4px; background:transparent; }
+    .scale input[type="radio"]{ transform:scale(1.05); }
+
+    .notice{
+      background:#f8fafc;
+      border-left:4px solid #c7f5ff;
+      padding:0.5rem;
+      color:var(--muted);
+      border-radius:4px;
+      font-size:0.9rem;
+    }
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="container" id="app">
     <header>
-      <h1>😊 EDS Biosocial Research Platform</h1>
-      <p class="subtitle">
-        A community-driven study exploring the intersections of Ehlers-Danlos syndrome subtypes,
-        Hypermobility Spectrum Disorders, biology, and lived social experience.
-        Your responses help make visible the diagnostic delays, stigma, and systemic barriers faced by our community.
-      </p>
+      <h1>EDS Biosocial Research Survey</h1>
+      <p class="lead">Community-centered survey capturing demographic, diagnostic, symptom, social, and care experience data. All responses are confidential. This is a frontend prototype — data will be stored securely via Supabase in a future integration.</p>
     </header>
 
-    <div class="tab-navigation">
-      <button class="tab-btn active" data-tab="survey">📋 Take Survey</button>
-      <button class="tab-btn" data-tab="visualization">🗂 Live Data Visualization</button>
-      <button class="tab-btn" data-tab="about">ℹ️ About This Study</button>
-    </div>
-
-    <div id="survey-tab" class="tab-content active">
-      <div id="success-message" class="success-message">
-        ✅ Thank you! Your response has been recorded and added to our collective knowledge.
-      </div>
-
-      <form id="eds-survey-form">
-        <!-- (form content kept identical to the provided base HTML for brevity in this block) -->
-        <!-- CORE SURVEY: DEMOGRAPHICS & IDENTITY -->
-        <div class="form-section">
-          <h2>👤 Demographics & Identity</h2>
-          <p class="section-description">
-            Understanding who experiences EDS/HSD helps us identify diagnostic disparities and systemic barriers.
-          </p>
-
-          <div class="form-group">
-            <label>Age Range</label>
-            <select name="age_range" required>
-              <option value="">Select...</option>
-              <option value="18-25">18-25</option>
-              <option value="26-35">26-35</option>
-              <option value="36-45">36-45</option>
-              <option value="46-55">46-55</option>
-              <option value="56-65">56-65</option>
-              <option value="66+">66+</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label>Race/Ethnicity (check all that apply)</label>
-            <div class="checkbox-grid">
-              <div class="checkbox-item">
-                <input type="checkbox" name="race" value="white" id="race-white">
-                <label for="race-white">White</label>
-              </div>
-              <div class="checkbox-item">
-                <input type="checkbox" name="race" value="black" id="race-black">
-                <label for="race-black">Black/African American</label>
-              </div>
-              <div class="checkbox-item">
-                <input type="checkbox" name="race" value="latinx" id="race-latinx">
-                <label for="race-latinx">Hispanic/Latinx</label>
-              </div>
-              <div class="checkbox-item">
-                <input type="checkbox" name="race" value="asian" id="race-asian">
-                <label for="race-asian">Asian</label>
-              </div>
-              <div class="checkbox-item">
-                <input type="checkbox" name="race" value="indigenous" id="race-indigenous">
-                <label for="race-indigenous">Indigenous/Native</label>
-              </div>
-              <div class="checkbox-item">
-                <input type="checkbox" name="race" value="mena" id="race-mena">
-                <label for="race-mena">Middle Eastern/North African</label>
-              </div>
-              <div class="checkbox-item">
-                <input type="checkbox" name="race" value="pacific-islander" id="race-pacific">
-                <label for="race-pacific">Pacific Islander</label>
-              </div>
-              <div class="checkbox-item">
-                <input type="checkbox" name="race" value="multiracial" id="race-multiracial">
-                <label for="race-multiracial">Multiracial</label>
-              </div>
-              <div class="checkbox-item">
-                <input type="checkbox" name="race" value="self-describe" id="race-self">
-                <label for="race-self">Prefer to self-describe</label>
-              </div>
+    <main>
+      <form id="edsSurvey" novalidate>
+        <!-- DEMOGRAPHICS & IDENTITY -->
+        <section class="card" id="section-demographics" aria-labelledby="demographics-heading">
+          <h2 id="demographics-heading">DEMOGRAPHICS & IDENTITY</h2>
+          <fieldset>
+            <legend class="small">Age range <span class="required-star" aria-hidden="true">*</span></legend>
+            <div class="inline" role="radiogroup" aria-required="true" id="age-range-group">
+              <label><input type="radio" name="ageRange" value="Under 18"> Under 18</label>
+              <label><input type="radio" name="ageRange" value="18–24"> 18–24</label>
+              <label><input type="radio" name="ageRange" value="25–34"> 25–34</label>
+              <label><input type="radio" name="ageRange" value="35–44"> 35–44</label>
+              <label><input type="radio" name="ageRange" value="45–54"> 45–54</label>
+              <label><input type="radio" name="ageRange" value="55–64"> 55–64</label>
+              <label><input type="radio" name="ageRange" value="65+"> 65+</label>
             </div>
-            <input type="text" id="race-self-input" class="checkbox-other-input" name="race_self_describe" placeholder="Please specify..." style="display: none;">
+            <div class="error" id="err-age"></div>
+          </fieldset>
+
+          <fieldset>
+            <legend class="small">Race / Ethnicity (select all that apply) <span class="required-star">*</span></legend>
+            <div class="checkbox-grid" id="race-grid">
+              <label><input type="checkbox" name="race" value="White"> White</label>
+              <label><input type="checkbox" name="race" value="Black/African American"> Black/African American</label>
+              <label><input type="checkbox" name="race" value="Hispanic/Latinx"> Hispanic/Latinx</label>
+              <label><input type="checkbox" name="race" value="Asian"> Asian</label>
+              <label><input type="checkbox" name="race" value="Indigenous/Native"> Indigenous/Native</label>
+              <label><input type="checkbox" name="race" value="Middle Eastern/North African"> Middle Eastern/North African</label>
+              <label><input type="checkbox" name="race" value="Pacific Islander"> Pacific Islander</label>
+              <label><input type="checkbox" name="race" value="Multiracial"> Multiracial</label>
+              <label><input type="checkbox" name="race" value="Prefer not to say"> Prefer not to say</label>
+              <label><input type="checkbox" id="race-self" name="race" value="Prefer to self-describe"> Prefer to self-describe</label>
+            </div>
+            <div id="race-self-text" style="display:none; margin-top:0.5rem;">
+              <label for="raceSelfInput">Please describe</label>
+              <input id="raceSelfInput" name="raceSelf" type="text" placeholder="Self-describe your race/ethnicity">
+            </div>
+            <div class="error" id="err-race"></div>
+          </fieldset>
+
+          <fieldset>
+            <legend class="small">Gender identity <span class="required-star">*</span></legend>
+            <div class="inline" role="radiogroup" aria-required="true" id="gender-group">
+              <label><input type="radio" name="gender" value="Woman"> Woman</label>
+              <label><input type="radio" name="gender" value="Man"> Man</label>
+              <label><input type="radio" name="gender" value="Nonbinary"> Nonbinary</label>
+              <label><input type="radio" name="gender" value="Transgender woman"> Transgender woman</label>
+              <label><input type="radio" name="gender" value="Transgender man"> Transgender man</label>
+              <label><input type="radio" name="gender" value="Prefer not to say"> Prefer not to say</label>
+              <label><input type="radio" id="gender-self" name="gender" value="Prefer to self-describe"> Prefer to self-describe</label>
+            </div>
+            <div id="gender-self-text" style="display:none; margin-top:0.5rem;">
+              <label for="genderSelfInput">Please describe</label>
+              <input id="genderSelfInput" name="genderSelf" type="text" placeholder="Self-describe your gender">
+            </div>
+            <div class="error" id="err-gender"></div>
+          </fieldset>
+
+          <fieldset>
+            <legend class="small">Sexual orientation</legend>
+            <div class="inline" role="radiogroup" id="orientation-group">
+              <label><input type="radio" name="orientation" value="Straight"> Straight</label>
+              <label><input type="radio" name="orientation" value="Gay"> Gay</label>
+              <label><input type="radio" name="orientation" value="Lesbian"> Lesbian</label>
+              <label><input type="radio" name="orientation" value="Bisexual"> Bisexual</label>
+              <label><input type="radio" name="orientation" value="Queer"> Queer</label>
+              <label><input type="radio" name="orientation" value="Asexual"> Asexual</label>
+              <label><input type="radio" id="orientation-self" name="orientation" value="Prefer to self-describe"> Prefer to self-describe</label>
+            </div>
+            <div id="orientation-self-text" style="display:none; margin-top:0.5rem;">
+              <label for="orientationSelfInput">Please describe</label>
+              <input id="orientationSelfInput" name="orientationSelf" type="text" placeholder="Self-describe your sexual orientation">
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend class="small">Geographic location</legend>
+            <select name="geo" id="geo">
+              <option value="" selected disabled>Choose region</option>
+              <option>USA</option>
+              <option>Canada</option>
+              <option>UK/Ireland</option>
+              <option>Europe</option>
+              <option>Australia/NZ</option>
+              <option>Other</option>
+            </select>
+          </fieldset>
+        </section>
+
+        <!-- DIAGNOSTIC JOURNEY -->
+        <section class="card" id="section-diagnostic" aria-labelledby="diagnostic-heading">
+          <h2 id="diagnostic-heading">DIAGNOSTIC JOURNEY</h2>
+          <fieldset>
+            <legend class="small">EDS/HSD Type <span class="required-star">*</span></legend>
+            <select id="edsType" name="edsType" aria-required="true">
+              <option value="" selected disabled>Choose one</option>
+              <option value="hEDS">hEDS</option>
+              <option value="cEDS">cEDS</option>
+              <option value="vEDS">vEDS</option>
+              <option value="kEDS">kEDS</option>
+              <option value="dEDS">dEDS</option>
+              <option value="mcEDS">mcEDS</option>
+              <option value="mEDS">mEDS</option>
+              <option value="spEDS">spEDS</option>
+              <option value="other rare types">other rare types</option>
+              <option value="HSD">HSD</option>
+              <option value="Suspected">Suspected</option>
+            </select>
+            <div class="error" id="err-edsType"></div>
+          </fieldset>
+
+          <!-- Subtype module (conditional) -->
+          <div id="subtype-module" style="display:none; margin-top:0.75rem;">
+            <div class="notice">You selected a specific subtype. Please answer the subtype-specific questions below as best you can.</div>
+            <fieldset style="margin-top:0.5rem;">
+              <legend class="small">Subtype-specific symptoms (select all that apply)</legend>
+              <div class="checkbox-grid">
+                <label><input type="checkbox" name="sub_symptom" value="Vascular complications"> Vascular complications</label>
+                <label><input type="checkbox" name="sub_symptom" value="Skin hyperextensibility"> Skin hyperextensibility</label>
+                <label><input type="checkbox" name="sub_symptom" value="Congenital malformations"> Congenital malformations</label>
+                <label><input type="checkbox" name="sub_symptom" value="Severe joint instability"> Severe joint instability</label>
+                <label><input type="checkbox" name="sub_symptom" value="Fragile connective tissue"> Fragile connective tissue</label>
+                <label><input type="checkbox" name="sub_symptom" value="Other"> Other</label>
+              </div>
+              <div id="subsym-other-text" style="display:none; margin-top:0.5rem;">
+                <input type="text" id="subsymOther" name="subsymOther" placeholder="Describe other subtype symptom">
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend class="small">Complications (optional)</legend>
+              <textarea name="sub_complications" placeholder="Describe any subtype-specific complications (surgical, vascular, GI, other)"></textarea>
+            </fieldset>
+
+            <fieldset>
+              <legend class="small">Diagnostic barriers (optional)</legend>
+              <textarea name="sub_barriers" placeholder="What subtype-specific diagnostic barriers did you encounter?"></textarea>
+            </fieldset>
+
+            <fieldset>
+              <legend class="small">Stigma experiences (optional)</legend>
+              <textarea name="sub_stigma" placeholder="Subtype-specific stigma or dismissal examples"></textarea>
+            </fieldset>
+
+            <fieldset>
+              <legend class="small">Access barriers (optional)</legend>
+              <textarea name="sub_access" placeholder="Subtype-specific access issues (specialists, travel, cost)"></textarea>
+            </fieldset>
+
+            <fieldset>
+              <legend class="small">Childhood vs adult-onset</legend>
+              <label><input type="radio" name="sub_onset" value="Childhood"> Childhood onset</label>
+              <label><input type="radio" name="sub_onset" value="Adult"> Adult onset</label>
+              <label><input type="radio" name="sub_onset" value="Both"> Both</label>
+              <label><input type="radio" name="sub_onset" value="Unsure"> Unsure</label>
+            </fieldset>
           </div>
 
-          <div class="form-group">
-            <label>Gender Identity</label>
-            <select name="gender" required>
-              <option value="">Select...</option>
-              <option value="woman">Woman</option>
-              <option value="man">Man</option>
-              <option value="transgender-woman">Transgender woman</option>
-              <option value="transgender-man">Transgender man</option>
-              <option value="nonbinary">Non-binary</option>
-              <option value="self-describe">Prefer to self-describe</option>
-              <option value="no-answer">Prefer not to answer</option>
-            </select>
-            <input type="text" id="gender-self-input" name="gender_self_describe" placeholder="Please specify..." style="display: none; margin-top: 10px;">
-          </div>
+          <fieldset>
+            <label for="ageSymptoms">Age when symptoms began <span class="required-star">*</span></label>
+            <input id="ageSymptoms" type="number" name="ageSymptoms" min="0" max="120" inputmode="numeric" placeholder="e.g., 14">
+            <div class="error" id="err-ageSymptoms"></div>
+          </fieldset>
 
-          <div class="form-group">
-            <label>Sexual Orientation</label>
-            <select name="sexuality">
-              <option value="">Select...</option>
-              <option value="straight">Straight</option>
-              <option value="gay">Gay</option>
-              <option value="lesbian">Lesbian</option>
-              <option value="bisexual">Bisexual</option>
-              <option value="queer">Queer</option>
-              <option value="asexual">Asexual</option>
-              <option value="self-describe">Prefer to self-describe</option>
-              <option value="no-answer">Prefer not to answer</option>
-            </select>
-            <input type="text" id="sexuality-self-input" name="sexuality_self_describe" placeholder="Please specify..." style="display: none; margin-top: 10px;">
-          </div>
+          <fieldset>
+            <label for="ageDiagnosed">Age when formally diagnosed</label>
+            <input id="ageDiagnosed" type="number" name="ageDiagnosed" min="0" max="120" inputmode="numeric" placeholder="If applicable">
+          </fieldset>
 
-          <div class="form-group">
-            <label>Country</label>
-            <select name="country" required>
-              <option value="">Select...</option>
-              <optgroup label="North America">
-                <option value="us">United States</option>
-                <option value="canada">Canada</option>
-                <option value="mexico">Mexico</option>
-              </optgroup>
-              <optgroup label="Central & South America">
-                <option value="argentina">Argentina</option>
-                <option value="brazil">Brazil</option>
-                <option value="chile">Chile</option>
-                <option value="colombia">Colombia</option>
-                <option value="peru">Peru</option>
-                <option value="venezuela">Venezuela</option>
-                <option value="other-latam">Other Latin America</option>
-              </optgroup>
-              <optgroup label="Europe">
-                <option value="uk">United Kingdom</option>
-                <option value="ireland">Ireland</option>
-                <option value="france">France</option>
-                <option value="germany">Germany</option>
-                <option value="spain">Spain</option>
-                <option value="italy">Italy</option>
-                <option value="netherlands">Netherlands</option>
-                <option value="belgium">Belgium</option>
-                <option value="sweden">Sweden</option>
-                <option value="norway">Norway</option>
-                <option value="denmark">Denmark</option>
-                <option value="finland">Finland</option>
-                <option value="poland">Poland</option>
-                <option value="other-europe">Other Europe</option>
-              </optgroup>
-              <optgroup label="Asia">
-                <option value="china">China</option>
-                <option value="india">India</option>
-                <option value="japan">Japan</option>
-                <option value="south-korea">South Korea</option>
-                <option value="philippines">Philippines</option>
-                <option value="indonesia">Indonesia</option>
-                <option value="thailand">Thailand</option>
-                <option value="vietnam">Vietnam</option>
-                <option value="singapore">Singapore</option>
-                <option value="other-asia">Other Asia</option>
-              </optgroup>
-              <optgroup label="Middle East">
-                <option value="israel">Israel</option>
-                <option value="uae">United Arab Emirates</option>
-                <option value="saudi-arabia">Saudi Arabia</option>
-                <option value="turkey">Turkey</option>
-                <option value="other-middle-east">Other Middle East</option>
-              </optgroup>
-              <optgroup label="Africa">
-                <option value="south-africa">South Africa</option>
-                <option value="nigeria">Nigeria</option>
-                <option value="egypt">Egypt</option>
-                <option value="kenya">Kenya</option>
-                <option value="other-africa">Other Africa</option>
-              </optgroup>
-              <optgroup label="Oceania">
-                <option value="australia">Australia</option>
-                <option value="new-zealand">New Zealand</option>
-                <option value="other-oceania">Other Oceania</option>
-              </optgroup>
-              <option value="other">Other</option>
+          <fieldset>
+            <legend class="small">Number of clinicians seen before diagnosis</legend>
+            <select name="cliniciansBefore">
+              <option value="" disabled selected>Choose</option>
+              <option>0</option>
+              <option>1</option>
+              <option>2–4</option>
+              <option>5+</option>
             </select>
-            <input type="text" id="country-other-input" name="country_other" placeholder="Please specify country..." style="display: none; margin-top: 10px;">
-          </div>
+          </fieldset>
 
-          <div class="form-group">
-            <label>Location Type</label>
-            <select name="location_type" required>
-              <option value="">Select...</option>
-              <option value="urban">Urban</option>
-              <option value="suburban">Suburban</option>
-              <option value="rural">Rural</option>
+          <fieldset>
+            <legend class="small">Were symptoms attributed to anxiety/stress/"in your head"?</legend>
+            <label><input type="radio" name="attributed" value="Yes frequently"> Yes frequently</label>
+            <label><input type="radio" name="attributed" value="Yes occasionally"> Yes occasionally</label>
+            <label><input type="radio" name="attributed" value="No"> No</label>
+          </fieldset>
+
+          <fieldset>
+            <legend class="small">Did race, gender, or class affect care?</legend>
+            <label><input type="radio" name="identityAffect" value="Yes significantly"> Yes significantly</label>
+            <label><input type="radio" name="identityAffect" value="Yes somewhat"> Yes somewhat</label>
+            <label><input type="radio" name="identityAffect" value="No"> No</label>
+            <label><input type="radio" name="identityAffect" value="Unsure"> Unsure</label>
+          </fieldset>
+
+          <fieldset>
+            <legend class="small">Trigger / worsening events (select all that apply)</legend>
+            <div class="checkbox-grid">
+              <label><input type="checkbox" name="triggers" value="Puberty"> Puberty</label>
+              <label><input type="checkbox" name="triggers" value="Viral illness"> Viral illness</label>
+              <label><input type="checkbox" name="triggers" value="Long COVID"> Long COVID</label>
+              <label><input type="checkbox" name="triggers" value="Physical injury"> Physical injury</label>
+              <label><input type="checkbox" name="triggers" value="Pregnancy/childbirth"> Pregnancy/childbirth</label>
+              <label><input type="checkbox" name="triggers" value="Surgery"> Surgery</label>
+              <label><input type="checkbox" name="triggers" value="Emotional trauma/major stress"> Emotional trauma/major stress</label>
+              <label><input type="checkbox" name="triggers" value="No clear trigger"> No clear trigger</label>
+              <label><input type="checkbox" id="trigger-other" name="triggers" value="Other"> Other</label>
+            </div>
+            <div id="trigger-other-text" style="display:none; margin-top:0.5rem;">
+              <input type="text" id="triggerOtherInput" name="triggerOther" placeholder="Describe other trigger or worsening event">
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend class="small">What led to diagnosis? (select all that apply)</legend>
+            <div class="checkbox-grid">
+              <label><input type="checkbox" name="ledToDx" value="Self-advocacy"> Self-advocacy</label>
+              <label><input type="checkbox" name="ledToDx" value="Online chronic illness community"> Online chronic illness community</label>
+              <label><input type="checkbox" name="ledToDx" value="Social media"> Social media</label>
+              <label><input type="checkbox" name="ledToDx" value="Specialist referral"> Specialist referral</label>
+              <label><input type="checkbox" name="ledToDx" value="Geneticist/dysautonomia specialist"> Geneticist/dysautonomia specialist</label>
+              <label><input type="checkbox" name="ledToDx" value="PT/OT suggestion"> PT/OT suggestion</label>
+              <label><input type="checkbox" name="ledToDx" value="Family member recognition"> Family member recognition</label>
+              <label><input type="checkbox" name="ledToDx" value="Insurance change"> Insurance change</label>
+              <label><input type="checkbox" name="ledToDx" value="Chance"> Chance</label>
+              <label><input type="checkbox" id="led-other" name="ledToDx" value="Other"> Other</label>
+            </div>
+            <div id="led-other-text" style="display:none; margin-top:0.5rem;">
+              <input type="text" id="ledOtherInput" name="ledOther" placeholder="Describe other factor that led to diagnosis">
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <label for="diagnosticStory">Optional: Diagnostic story (free-text)</label>
+            <textarea id="diagnosticStory" name="diagnosticStory" placeholder="If you wish, share your diagnostic journey, barriers, and turning points"></textarea>
+          </fieldset>
+        </section>
+
+        <!-- SYMPTOMS & FUNCTIONAL IMPACT -->
+        <section class="card" id="section-symptoms" aria-labelledby="symptoms-heading">
+          <h2 id="symptoms-heading">SYMPTOMS & FUNCTIONAL IMPACT</h2>
+
+          <fieldset>
+            <legend class="small">Which symptoms do you experience? (select all that apply) <span class="required-star">*</span></legend>
+            <div class="checkbox-grid" id="symptoms-grid">
+              <label><input type="checkbox" name="symptom" value="Chronic widespread pain"> Chronic widespread pain</label>
+              <label><input type="checkbox" name="symptom" value="Joint instability/subluxations"> Joint instability/subluxations</label>
+              <label><input type="checkbox" name="symptom" value="Severe fatigue"> Severe fatigue</label>
+              <label><input type="checkbox" name="symptom" value="POTS/dysautonomia"> POTS/dysautonomia</label>
+              <label><input type="checkbox" name="symptom" value="GI dysfunction"> GI dysfunction</label>
+              <label><input type="checkbox" name="symptom" value="MCAS/allergic reactions"> MCAS/allergic reactions</label>
+              <label><input type="checkbox" name="symptom" value="Brain fog/cognitive dysfunction"> Brain fog/cognitive dysfunction</label>
+              <label><input type="checkbox" name="symptom" value="Headaches/migraines"> Headaches/migraines</label>
+              <label><input type="checkbox" name="symptom" value="Sleep disturbances"> Sleep disturbances</label>
+              <label><input type="checkbox" name="symptom" value="Pelvic pain"> Pelvic pain</label>
+              <label><input type="checkbox" name="symptom" value="Neuropathic pain"> Neuropathic pain</label>
+              <label><input type="checkbox" name="symptom" value="Muscle spasms"> Muscle spasms</label>
+              <label><input type="checkbox" name="symptom" value="TMJ/jaw instability"> TMJ/jaw instability</label>
+              <label><input type="checkbox" name="symptom" value="Autonomic flares"> Autonomic flares</label>
+              <label><input type="checkbox" name="symptom" value="Skin fragility"> Skin fragility</label>
+              <label><input type="checkbox" name="symptom" value="Easy bruising"> Easy bruising</label>
+              <label><input type="checkbox" name="symptom" value="Gynecological symptoms"> Gynecological symptoms</label>
+            </div>
+            <div class="error" id="err-symptoms"></div>
+          </fieldset>
+
+          <div id="symptom-severity-container" style="margin-top:0.75rem;"></div>
+
+          <fieldset style="margin-top:0.5rem;">
+            <legend class="small">Symptom visibility & social reactions</legend>
+            <label for="mobilityAids">Do you use mobility aids?</label>
+            <select id="mobilityAids" name="mobilityAids">
+              <option value="" selected disabled>Choose</option>
+              <option>Never</option>
+              <option>Sometimes</option>
+              <option>Always</option>
             </select>
-          </div>
+
+            <label class="small" style="margin-top:0.5rem;">Do people treat you differently because of your symptoms?</label>
+            <div class="inline">
+              <label><input type="radio" name="treatedDifferently" value="Yes"> Yes</label>
+              <label><input type="radio" name="treatedDifferently" value="No"> No</label>
+            </div>
+            <div id="treatedDiffText" style="display:none; margin-top:0.5rem;">
+              <label for="treatedDiffDetails">If yes, describe how</label>
+              <input id="treatedDiffDetails" name="treatedDiffDetails" type="text" placeholder="Examples of different treatment or microaggressions">
+            </div>
+
+            <label style="margin-top:0.5rem;">How visible are your symptoms to others? (1 = not visible, 5 = very visible)</label>
+            <div class="inline" role="radiogroup" aria-label="visibility scale">
+              <label><input type="radio" name="visibility" value="1">1</label>
+              <label><input type="radio" name="visibility" value="2">2</label>
+              <label><input type="radio" name="visibility" value="3">3</label>
+              <label><input type="radio" name="visibility" value="4">4</label>
+              <label><input type="radio" name="visibility" value="5">5</label>
+            </div>
+          </fieldset>
+
+          <fieldset style="margin-top:0.5rem;">
+            <label for="missedDays">Missed work/school days in last 12 months (approx.)</label>
+            <input id="missedDays" name="missedDays" type="number" min="0" step="1" inputmode="numeric" placeholder="e.g., 20">
+          </fieldset>
+
+          <fieldset>
+            <label>ADL (activities of daily living) difficulties (1 = no difficulty, 5 = extreme difficulty)</label>
+            <div class="inline">
+              <label><input type="radio" name="adl" value="1">1</label>
+              <label><input type="radio" name="adl" value="2">2</label>
+              <label><input type="radio" name="adl" value="3">3</label>
+              <label><input type="radio" name="adl" value="4">4</label>
+              <label><input type="radio" name="adl" value="5">5</label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend class="small">Which 3 symptoms impact your life the most? (ranked)</legend>
+            <div id="topSymptomsWrapper" class="grid" style="grid-template-columns:repeat(3,1fr);">
+              <select id="top1"><option value="">Top 1</option></select>
+              <select id="top2"><option value="">Top 2</option></select>
+              <select id="top3"><option value="">Top 3</option></select>
+            </div>
+            <div class="small help">Select up to three symptoms that you feel have the greatest impact. Selections must be unique.</div>
+            <div class="error" id="err-topSymptoms"></div>
+          </fieldset>
+        </section>
+
+        <!-- SOCIAL DETERMINANTS & ACCESS -->
+        <section class="card" id="section-social" aria-labelledby="social-heading">
+          <h2 id="social-heading">SOCIAL DETERMINANTS & ACCESS</h2>
+
+          <fieldset>
+            <legend class="small">Distance traveled for care (one-way)</legend>
+            <select name="distance">
+              <option value="" selected disabled>Choose</option>
+              <option>&lt;50 miles</option>
+              <option>50–299 miles</option>
+              <option>300–599 miles</option>
+              <option>600–999 miles</option>
+              <option>1000+ miles</option>
+            </select>
+          </fieldset>
+
+          <fieldset>
+            <label for="specialistsLastYear">Number of specialists seen in the last year</label>
+            <input id="specialistsLastYear" name="specialistsLastYear" type="number" min="0" max="50" placeholder="0">
+          </fieldset>
+
+          <fieldset>
+            <legend class="small">Out-of-pocket costs last year</legend>
+            <select name="oopc">
+              <option value="" selected disabled>Choose</option>
+              <option>$0–499</option>
+              <option>$500–999</option>
+              <option>$1,000–2,499</option>
+              <option>$2,500–4,999</option>
+              <option>$5,000+</option>
+            </select>
+          </fieldset>
+
+          <fieldset>
+            <legend class="small">Hospitalizations in last 12 months</legend>
+            <select name="hospitalizations">
+              <option value="" disabled selected>Choose</option>
+              <option>0</option>
+              <option>1</option>
+              <option>2–3</option>
+              <option>4+</option>
+            </select>
+          </fieldset>
+
+          <fieldset>
+            <legend class="small">Insurance type</legend>
+            <div class="inline">
+              <label><input type="checkbox" name="insurance" value="Medicaid"> Medicaid</label>
+              <label><input type="checkbox" name="insurance" value="Medicare"> Medicare</label>
+              <label><input type="checkbox" name="insurance" value="Private"> Private</label>
+              <label><input type="checkbox" name="insurance" value="Uninsured"> Uninsured</label>
+              <label><input type="checkbox" name="insurance" value="Disabled/Long-term disability"> Disabled/Long-term disability</label>
+            </div>
+          </fieldset>
+        </section>
+
+        <!-- STIGMA & MEDICAL DISMISSAL -->
+        <section class="card" id="section-stigma" aria-labelledby="stigma-heading">
+          <h2 id="stigma-heading">STIGMA & MEDICAL DISMISSAL</h2>
+
+          <fieldset>
+            <legend class="small">Dismissal types experienced (select all that apply)</legend>
+            <div class="checkbox-grid">
+              <label><input type="checkbox" name="dismissal" value="Psychosomatic"> Psychosomatic</label>
+              <label><input type="checkbox" name="dismissal" value="Anxiety"> Anxiety</label>
+              <label><input type="checkbox" name="dismissal" value="Growing pains"> "Growing pains"</label>
+              <label><input type="checkbox" name="dismissal" value="Weight-related"> Weight-related</label>
+              <label><input type="checkbox" name="dismissal" value="Drug-seeking"> Drug-seeking</label>
+              <label><input type="checkbox" name="dismissal" value="Too young"> "Too young"</label>
+              <label><input type="checkbox" name="dismissal" value="EDS is too rare"> "EDS is too rare"</label>
+              <label><input type="checkbox" name="dismissal" value="Looks normal"> "Looks normal"</label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <label>Medical mistrust: I avoid care because I expect not to be believed (1 = strongly disagree, 5 = strongly agree)</label>
+            <div class="inline">
+              <label><input type="radio" name="medicalMistrust" value="1">1</label>
+              <label><input type="radio" name="medicalMistrust" value="2">2</label>
+              <label><input type="radio" name="medicalMistrust" value="3">3</label>
+              <label><input type="radio" name="medicalMistrust" value="4">4</label>
+              <label><input type="radio" name="medicalMistrust" value="5">5</label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend class="small">Appointment accompaniment frequency</legend>
+            <select name="accompaniment">
+              <option value="" selected disabled>Choose</option>
+              <option>Always</option>
+              <option>Often</option>
+              <option>Sometimes</option>
+              <option>Never</option>
+            </select>
+          </fieldset>
+
+          <fieldset>
+            <legend class="small">Has a provider refused testing or referrals because they did not believe your symptoms?</legend>
+            <div class="inline">
+              <label><input type="radio" name="refusedTesting" value="Yes"> Yes</label>
+              <label><input type="radio" name="refusedTesting" value="No"> No</label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend class="small">Have you avoided ER care due to expected disbelief?</legend>
+            <div class="inline">
+              <label><input type="radio" name="avoidedER" value="Yes"> Yes</label>
+              <label><input type="radio" name="avoidedER" value="No"> No</label>
+            </div>
+          </fieldset>
+        </section>
+
+        <!-- INTERSECTIONAL EXPERIENCES -->
+        <section class="card" id="section-intersectional" aria-labelledby="intersectional-heading">
+          <h2 id="intersectional-heading">INTERSECTIONAL EXPERIENCES</h2>
+
+          <fieldset>
+            <legend class="small">Did race/ethnicity affect your diagnosis timeline?</legend>
+            <label><input type="radio" name="raceAffectDx" value="Yes significantly"> Yes significantly</label>
+            <label><input type="radio" name="raceAffectDx" value="Yes somewhat"> Yes somewhat</label>
+            <label><input type="radio" name="raceAffectDx" value="No"> No</label>
+            <label><input type="radio" name="raceAffectDx" value="N/A"> N/A</label>
+          </fieldset>
+
+          <fieldset>
+            <label for="intersectionalBarriers">Describe intersectional barriers (identity × access) (optional)</label>
+            <textarea id="intersectionalBarriers" name="intersectionalBarriers" placeholder="Share ways identity has interacted with access, care, or diagnosis"></textarea>
+          </fieldset>
+        </section>
+
+        <!-- COMMUNITY, COPING & ADVOCACY -->
+        <section class="card" id="section-community" aria-labelledby="community-heading">
+          <h2 id="community-heading">COMMUNITY, COPING & ADVOCACY</h2>
+
+          <fieldset>
+            <legend class="small">Non-medical coping strategies you use (select all that apply)</legend>
+            <div class="checkbox-grid">
+              <label><input type="checkbox" name="coping" value="Assistive devices"> Assistive devices</label>
+              <label><input type="checkbox" name="coping" value="Body braces/taping"> Body braces/taping</label>
+              <label><input type="checkbox" name="coping" value="Heat/ice"> Heat/ice</label>
+              <label><input type="checkbox" name="coping" value="Cannabis/THC/CBD"> Cannabis/THC/CBD</label>
+              <label><input type="checkbox" name="coping" value="Ketamine therapy"> Ketamine therapy</label>
+              <label><input type="checkbox" name="coping" value="Gentle movement/PT"> Gentle movement/PT</label>
+              <label><input type="checkbox" name="coping" value="Creative expression"> Creative expression</label>
+              <label><input type="checkbox" id="coping-other" name="coping" value="Other"> Other</label>
+            </div>
+            <div id="coping-other-text" style="display:none; margin-top:0.5rem;">
+              <input type="text" id="copingOtherInput" name="copingOther" placeholder="Describe other coping strategies">
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend class="small">Procedural / anesthetic complications (select all that apply)</legend>
+            <div class="checkbox-grid">
+              <label><input type="checkbox" name="anesthesia" value="Short anesthesia effect"> Short anesthesia effect</label>
+              <label><input type="checkbox" name="anesthesia" value="Intubation difficulty"> Intubation difficulty</label>
+              <label><input type="checkbox" name="anesthesia" value="Ineffective pain control"> Ineffective pain control</label>
+              <label><input type="checkbox" name="anesthesia" value="Allergic reaction"> Allergic reaction</label>
+              <label><input type="checkbox" name="anesthesia" value="None"> None</label>
+            </div>
+          </fieldset>
+        </section>
+
+        <!-- FINAL FREE-TEXT -->
+        <section class="card" id="section-final" aria-labelledby="final-heading">
+          <h2 id="final-heading">FINAL — FREE-TEXT</h2>
+
+          <fieldset>
+            <label for="wishDoctors">What do you wish doctors understood about EDS/HSD?</label>
+            <textarea id="wishDoctors" name="wishDoctors" placeholder="Please share in your own words"></textarea>
+          </fieldset>
+
+          <fieldset>
+            <label for="anythingElse">Is there anything else about your experience that feels important to share?</label>
+            <textarea id="anythingElse" name="anythingElse" placeholder="Anything else you'd like to tell us (optional)"></textarea>
+          </fieldset>
+        </section>
+
+        <div class="controls">
+          <button type="button" id="resetBtn" class="secondary">Reset</button>
+          <button type="submit" id="submitBtn">Submit</button>
         </div>
 
-        <!-- CORE SURVEY: DIAGNOSIS TYPE (TRIGGERS SUBTYPE MODULE) -->
-        <div class="form-section">
-          <h2>🧩 Diagnosis & Subtype</h2>
-          <p class="section-description">
-            Your diagnosis type determines which specialized questions you'll see next.
-          </p>
-
-          <div class="form-group">
-            <label>Current Diagnosis</label>
-            <select name="diagnosis" id="diagnosis-select" required>
-              <option value="">Select...</option>
-              <option value="heds">Hypermobile EDS (hEDS)</option>
-              <option value="hsd">Hypermobility Spectrum Disorder (HSD)</option>
-              <option value="ceds">Classical EDS (cEDS)</option>
-              <option value="veds">Vascular EDS (vEDS)</option>
-              <option value="keds">Kyphoscoliotic EDS (kEDS)</option>
-              <option value="aeds">Arthrochalasia EDS (aEDS)</option>
-              <option value="deds">Dermatosparaxis EDS (dEDS)</option>
-              <option value="bcs">Brittle Cornea Syndrome (BCS)</option>
-              <option value="mceds">Musculocontractural EDS (mcEDS)</option>
-              <option value="meds">Myopathic EDS (mEDS)</option>
-              <option value="speds">Spondylodysplastic EDS (spEDS)</option>
-              <option value="other-rare">Other rare EDS type</option>
-              <option value="suspected">Suspected but not formally diagnosed</option>
-            </select>
-            <input type="text" id="diagnosis-other-input" name="diagnosis_other" placeholder="Please specify diagnosis..." style="display: none; margin-top: 10px;">
-          </div>
-
-          <div class="form-group">
-            <label>Age when symptoms began</label>
-            <input type="number" name="symptom_onset_age" min="0" max="100" required>
-          </div>
-
-          <div class="form-group">
-            <label>Age when formally diagnosed (if applicable)</label>
-            <input type="number" name="diagnosis_age" min="0" max="100">
-          </div>
-        </div>
-
-        <!-- SUBTYPE MODULES (Dynamically shown based on diagnosis selection) -->
-        <!-- For brevity, the subtype module blocks are retained exactly as in the base file.
-             (They were present in the original and are preserved here.) -->
-
-        <!-- (THE REMAINDER OF THE LARGE FORM FROM THE ORIGINAL BASE FILE IS INCLUDED VERBATIM) -->
-        <!-- ... (omitted here for brevity in this view — in production you would include the full content) -->
-        <!-- To keep the answer focused, we will assume the remaining form fields are present exactly as provided. -->
-
-        <button type="submit" class="submit-btn" id="submit-btn">Submit Your Response</button>
+        <div id="submissionResult" aria-live="polite"></div>
       </form>
-    </div>
-
-    <div id="visualization-tab" class="tab-content">
-      <div class="stats-panel">
-        <div class="stat-card">
-          <h3>Total Responses</h3>
-          <div class="stat-value" id="stat-total">0</div>
-        </div>
-        <div class="stat-card">
-          <h3>Avg Diagnostic Delay</h3>
-          <div class="stat-value" id="stat-delay">0 yrs</div>
-        </div>
-        <div class="stat-card">
-          <h3>Dismissed by Doctors</h3>
-          <div class="stat-value" id="stat-dismissed">0%</div>
-        </div>
-        <div class="stat-card">
-          <h3>Told "It's Anxiety"</h3>
-          <div class="stat-value" id="stat-anxiety">0%</div>
-        </div>
-      </div>
-
-      <div class="filter-panel">
-        <h3>🔎 Filter Data</h3>
-        <div class="filter-controls">
-          <div class="form-group">
-            <label>Diagnosis Type</label>
-            <select id="filter-diagnosis">
-              <option value="all">All</option>
-              <option value="heds">hEDS</option>
-              <option value="hsd">HSD</option>
-              <option value="ceds">cEDS</option>
-              <option value="veds">vEDS</option>
-              <option value="suspected">Suspected</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Gender</label>
-            <select id="filter-gender">
-              <option value="all">All</option>
-              <option value="woman">Woman</option>
-              <option value="man">Man</option>
-              <option value="nonbinary">Non-binary</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Age Range</label>
-            <select id="filter-age">
-              <option value="all">All</option>
-              <option value="18-25">18-25</option>
-              <option value="26-35">26-35</option>
-              <option value="36-45">36-45</option>
-              <option value="46-55">46-55</option>
-              <option value="56-65">56-65</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <div id="visualization-container">
-        <canvas id="network-canvas"></canvas>
-      </div>
-
-      <div class="legend">
-        <h3>Network Legend</h3>
-        <div class="legend-items">
-          <div class="legend-item"><div class="legend-color" style="background: #667eea;"></div><span>Biomedical Symptoms</span></div>
-          <div class="legend-item"><div class="legend-color" style="background: #f093fb;"></div><span>Social Barriers</span></div>
-          <div class="legend-item"><div class="legend-color" style="background: #4facfe;"></div><span>Stigma Experiences</span></div>
-          <div class="legend-item"><div class="legend-color" style="background: #43e97b;"></div><span>Access Issues</span></div>
-          <div class="legend-item"><div class="legend-color" style="background: #fa709a;"></div><span>Identity Factors</span></div>
-          <div class="legend-item"><div class="legend-color" style="background: #feca57;"></div><span>Community Support</span></div>
-        </div>
-        <p style="margin-top:15px; color:#666; font-size:.9em;"><strong>Node size</strong> = frequency of experience | <strong>Edge thickness</strong> = correlation strength</p>
-      </div>
-    </div>
-
-    <div id="about-tab" class="tab-content">
-      <h2>About This Research</h2>
-      <p style="line-height:1.8; margin-bottom:20px;">
-        This platform extends the groundbreaking work of the <strong>Norris Lab EDS/HSD study</strong> (2024), which surveyed 3,906 validated participants and documented the profound medical complexity of hypermobile conditions.
-      </p>
-
-      <h3 style="color:#667eea; margin:30px 0 15px;">What's Different About This Study?</h3>
-      <p style="line-height:1.8; margin-bottom:20px;">
-        While the Norris Lab provided comprehensive biomedical data, our project adds the <strong>biosocial layer</strong>:
-      </p>
-      <ul style="line-height:2; margin-bottom:30px; padding-left:30px;">
-        <li><strong>Medical Stigma:</strong> Quantifying gaslighting, dismissal, and epistemic injustice</li>
-        <li><strong>Social Determinants:</strong> How class, insurance, geography create access barriers</li>
-        <li><strong>Intersectionality:</strong> Race, gender, sexuality's impact on diagnosis and care</li>
-        <li><strong>Lived Experience:</strong> The psychological toll of invisible disability</li>
-        <li><strong>Community Power:</strong> How peer support and advocacy sustain us</li>
-        <li><strong>Subtype-Specific Challenges:</strong> Unique barriers faced by each EDS subtype</li>
-      </ul>
-
-      <h3 style="color:#667eea; margin:30px 0 15px;">Data Usage & Privacy</h3>
-      <p style="line-height:1.8; margin-bottom:20px;">
-        All responses are <strong>anonymous and stored using secure browser storage</strong>. No personal identifying information is collected. Aggregated, de-identified data will be used for:
-      </p>
-      <ul style="line-height:2; margin-bottom:30px; padding-left:30px;">
-        <li>Public data visualizations showing patterns of stigma and access barriers</li>
-        <li>Advocacy materials for patient organizations</li>
-        <li>Educational resources for medical providers</li>
-        <li>Potential peer-reviewed publications (with community consent)</li>
-      </ul>
-
-      <h3 style="color:#667eea; margin:30px 0 15px;">Built With Care</h3>
-      <p style="line-height:1.8; margin-bottom:20px;">
-        This platform was designed using trauma-informed principles, acknowledging that answering questions about medical dismissal and stigma can be emotionally difficult. Take breaks as needed.
-      </p>
-
-      <div style="background:#f8f9fa; padding:25px; border-radius:10px; margin-top:30px;">
-        <h3 style="color:#667eea; margin-bottom:15px;">Questions or Concerns?</h3>
-        <p style="line-height:1.8;">
-          This is a community research project. If you have feedback, concerns about the questions, or ideas for improvement, your input is welcome and will shape how this study evolves.
-        </p>
-      </div>
-    </div>
-
-    <div class="tooltip" id="tooltip"></div>
+    </main>
   </div>
 
   <script>
-  // ==================== POLYFILL / STORAGE SHIM ====================
-  // Some environments might provide window.storage with async get/set (the original used that).
-  // Provide a robust fallback to localStorage so the page works in a normal browser.
-  if (!window.storage) {
-    window.storage = {
-      async set(key, value, persist) {
-        try {
-          localStorage.setItem(key, value);
-          return { ok: true };
-        } catch (err) {
-          return { ok: false, error: err };
-        }
-      },
-      async get(key, persist) {
-        try {
-          const v = localStorage.getItem(key);
-          return v === null ? null : { value: v };
-        } catch (err) {
-          return null;
-        }
+    // Helper: query selectors
+    const form = document.getElementById('edsSurvey');
+
+    // --- Conditional self-describe fields ---
+    const raceSelfCheckbox = document.getElementById('race-self');
+    const raceSelfText = document.getElementById('race-self-text');
+    raceSelfCheckbox && raceSelfCheckbox.addEventListener('change', () => {
+      raceSelfText.style.display = raceSelfCheckbox.checked ? 'block' : 'none';
+    });
+
+    const genderSelfRadio = document.getElementById('gender-self');
+    const genderSelfText = document.getElementById('gender-self-text');
+    genderSelfRadio && genderSelfRadio.addEventListener('change', () => {
+      // show text when checked; other radios hide it
+      genderSelfText.style.display = genderSelfRadio.checked ? 'block' : 'none';
+    });
+    // ensure hiding when other gender radios selected
+    document.querySelectorAll('input[name="gender"]').forEach(r => {
+      r.addEventListener('change', () => {
+        genderSelfText.style.display = (genderSelfRadio && genderSelfRadio.checked) ? 'block' : 'none';
+      });
+    });
+
+    const orientationSelfRadio = document.getElementById('orientation-self');
+    const orientationSelfText = document.getElementById('orientation-self-text');
+    orientationSelfRadio && orientationSelfRadio.addEventListener('change', () => {
+      orientationSelfText.style.display = orientationSelfRadio.checked ? 'block' : 'none';
+    });
+    document.querySelectorAll('input[name="orientation"]').forEach(r => {
+      r.addEventListener('change', () => {
+        orientationSelfText.style.display = (orientationSelfRadio && orientationSelfRadio.checked) ? 'block' : 'none';
+      });
+    });
+
+    // Triggers other
+    const triggerOther = document.getElementById('trigger-other');
+    const triggerOtherText = document.getElementById('trigger-other-text');
+    triggerOther && triggerOther.addEventListener('change', () => {
+      triggerOtherText.style.display = triggerOther.checked ? 'block' : 'none';
+    });
+
+    // Led to dx other
+    const ledOther = document.getElementById('led-other');
+    const ledOtherText = document.getElementById('led-other-text');
+    ledOther && ledOther.addEventListener('change', () => {
+      ledOtherText.style.display = ledOther.checked ? 'block' : 'none';
+    });
+
+    // Subtype-specific other
+    const subsymOther = document.querySelector('input[name="sub_symptom"][value="Other"]');
+    const subsymOtherText = document.getElementById('subsym-other-text');
+    subsymOther && subsymOther.addEventListener('change', () => {
+      subsymOtherText.style.display = subsymOther.checked ? 'block' : 'none';
+    });
+
+    // Coping other
+    const copingOther = document.getElementById('coping-other');
+    const copingOtherText = document.getElementById('coping-other-text');
+    copingOther && copingOther.addEventListener('change', () => {
+      copingOtherText.style.display = copingOther.checked ? 'block' : 'none';
+    });
+
+    // Treated differently text
+    const treatedRadios = document.querySelectorAll('input[name="treatedDifferently"]');
+    const treatedDiffText = document.getElementById('treatedDiffText');
+    treatedRadios.forEach(r => r.addEventListener('change', () => {
+      treatedDiffText.style.display = (document.querySelector('input[name="treatedDifferently"][value="Yes"]')?.checked) ? 'block' : 'none';
+    }));
+
+    // EDS subtype conditional module
+    const edsType = document.getElementById('edsType');
+    const subtypeModule = document.getElementById('subtype-module');
+    edsType.addEventListener('change', () => {
+      const val = edsType.value;
+      // show module for specific named subtypes, hide for HSD or Suspected
+      const showFor = ['hEDS','cEDS','vEDS','kEDS','dEDS','mcEDS','mEDS','spEDS','other rare types'];
+      subtypeModule.style.display = showFor.includes(val) ? 'block' : 'none';
+    });
+
+    // --- Symptoms & dynamic severity scales ---
+    const symptomCheckboxes = Array.from(document.querySelectorAll('input[name="symptom"]'));
+    const severityContainer = document.getElementById('symptom-severity-container');
+
+    function rebuildSeverityFields(){
+      // Clear container
+      severityContainer.innerHTML = '';
+      const selected = symptomCheckboxes.filter(cb => cb.checked).map(cb => cb.value);
+      selected.forEach(symptom => {
+        const idSafe = symptom.replace(/\s+/g,'_').replace(/[^\w_-]/g,'');
+        const wrapper = document.createElement('div');
+        wrapper.className = 'severity-row';
+        wrapper.innerHTML = `
+          <label style="min-width:220px;"><strong>${symptom}</strong> — Severity (1–5)</label>
+          <div class="scale" role="radiogroup" aria-label="${symptom} severity">
+            <label><input type="radio" name="severity_${idSafe}" value="1">1</label>
+            <label><input type="radio" name="severity_${idSafe}" value="2">2</label>
+            <label><input type="radio" name="severity_${idSafe}" value="3">3</label>
+            <label><input type="radio" name="severity_${idSafe}" value="4">4</label>
+            <label><input type="radio" name="severity_${idSafe}" value="5">5</label>
+          </div>
+        `;
+        severityContainer.appendChild(wrapper);
+      });
+      populateTopSymptoms(selected);
+    }
+
+    symptomCheckboxes.forEach(cb => {
+      cb.addEventListener('change', rebuildSeverityFields);
+    });
+
+    // Top 3 symptoms selects
+    const top1 = document.getElementById('top1');
+    const top2 = document.getElementById('top2');
+    const top3 = document.getElementById('top3');
+    const topSelects = [top1, top2, top3];
+
+    function populateTopSymptoms(selectedSymptoms){
+      // populate options
+      const placeholder = '<option value="">—</option>';
+      topSelects.forEach(s => {
+        s.innerHTML = placeholder;
+      });
+      selectedSymptoms.forEach(sym => {
+        const opt = document.createElement('option');
+        opt.value = sym;
+        opt.textContent = sym;
+        topSelects.forEach(s => s.appendChild(opt.cloneNode(true)));
+      });
+
+      // show only as many selects as available
+      topSelects.forEach((s, idx) => {
+        s.disabled = selectedSymptoms.length === 0;
+        s.style.display = (idx < Math.min(3, selectedSymptoms.length)) ? 'block' : 'none';
+      });
+    }
+
+    // initialize empty
+    rebuildSeverityFields();
+
+    // --- Form validation & submission ---
+    function showError(id, msg){
+      const el = document.getElementById(id);
+      if(el) el.textContent = msg || '';
+    }
+
+    function getCheckedValues(name){
+      return Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map(i => i.value);
+    }
+
+    function validate(){
+      let ok = true;
+
+      // Clear previous errors
+      ['err-age','err-race','err-gender','err-edsType','err-ageSymptoms','err-symptoms','err-topSymptoms'].forEach(id => showError(id, ''));
+
+      // DEMOGRAPHICS: age range required
+      const age = document.querySelector('input[name="ageRange"]:checked');
+      if(!age){
+        showError('err-age', 'Please select your age range.');
+        ok = false;
       }
-    };
-  }
 
-  // ==================== UTILS ====================
-  function safeId(id) { try { return document.getElementById(id); } catch(e){ return null; } }
+      // race: at least one
+      const races = getCheckedValues('race');
+      if(races.length === 0){
+        showError('err-race', 'Please select at least one race/ethnicity option (or Prefer not to say).');
+        ok = false;
+      }
 
-  // Collect form values into an object. Handles arrays for checkbox groups.
-  function serializeForm(form) {
-    const data = {};
-    const elements = Array.from(form.elements).filter(el => el.name);
-    elements.forEach(el => {
-      const name = el.name;
-      const type = el.type;
-      if (type === 'checkbox') {
-        // group handling: if multiple checkboxes share same name -> array
-        const checked = el.checked;
-        if (!data[name]) data[name] = [];
-        if (checked) data[name].push(el.value);
-      } else if (type === 'radio') {
-        if (el.checked) data[name] = el.value;
-        else if (!(name in data)) data[name] = data[name] || '';
-      } else if (el.tagName.toLowerCase() === 'select' && el.multiple) {
-        data[name] = Array.from(el.selectedOptions).map(o => o.value);
+      // gender required
+      const gender = document.querySelector('input[name="gender"]:checked');
+      if(!gender){
+        showError('err-gender', 'Please select a gender identity (or prefer not to say).');
+        ok = false;
+      }
+
+      // Diagnostic: eds type required
+      if(!edsType.value){
+        showError('err-edsType', 'Please select an EDS/HSD type or "Suspected".');
+        ok = false;
+      }
+
+      // Age when symptoms began required and reasonable
+      const ageSymptoms = document.getElementById('ageSymptoms').value;
+      if(ageSymptoms === '' || isNaN(ageSymptoms) || ageSymptoms < 0 || ageSymptoms > 120){
+        showError('err-ageSymptoms', 'Please enter a valid age when symptoms began.');
+        ok = false;
+      }
+
+      // Symptoms: require at least one
+      const selectedSymptoms = getCheckedValues('symptom');
+      if(selectedSymptoms.length === 0){
+        showError('err-symptoms', 'Please select at least one symptom that you experience.');
+        ok = false;
       } else {
-        // text, select-one, textarea, number
-        data[name] = el.value;
+        // validate each severity exists for selected symptom
+        for(const sym of selectedSymptoms){
+          const idSafe = sym.replace(/\s+/g,'_').replace(/[^\w_-]/g,'');
+          const severity = document.querySelector(`input[name="severity_${idSafe}"]:checked`);
+          if(!severity){
+            showError('err-symptoms', `Please rate the severity for: "${sym}".`);
+            ok = false;
+            break;
+          }
+        }
       }
-    });
-    // Clean empty arrays -> keep as [] or remove? We'll keep as [] to indicate checked none.
-    return data;
-  }
 
-  // ==================== DYNAMIC FORM BEHAVIOR (setup for "other" inputs + subtype modules) ====================
-  function setupOtherInputs() {
-    // Race self-describe
-    const raceSelf = safeId('race-self');
-    if (raceSelf) {
-      raceSelf.addEventListener('change', function() {
-        const input = safeId('race-self-input');
-        if (input) input.style.display = this.checked ? 'block' : 'none';
-      });
-    }
-
-    // Gender self-describe
-    const genderSelect = document.querySelector('select[name="gender"]');
-    if (genderSelect) {
-      genderSelect.addEventListener('change', function() {
-        const input = safeId('gender-self-input');
-        if (input) input.style.display = this.value === 'self-describe' ? 'block' : 'none';
-      });
-    }
-
-    // Sexuality self-describe
-    const sexualitySelect = document.querySelector('select[name="sexuality"]');
-    if (sexualitySelect) {
-      sexualitySelect.addEventListener('change', function() {
-        const input = safeId('sexuality-self-input');
-        if (input) input.style.display = this.value === 'self-describe' ? 'block' : 'none';
-      });
-    }
-
-    // Country other
-    const countrySelect = document.querySelector('select[name="country"]');
-    if (countrySelect) {
-      countrySelect.addEventListener('change', function() {
-        const showOther = this.value === 'other' || (typeof this.value === 'string' && this.value.includes('other-'));
-        const input = safeId('country-other-input');
-        if (input) input.style.display = showOther ? 'block' : 'none';
-      });
-    }
-
-    // Diagnosis other
-    const diagnosisSelect = safeId('diagnosis-select');
-    if (diagnosisSelect) {
-      diagnosisSelect.addEventListener('change', function() {
-        const input = safeId('diagnosis-other-input');
-        if (input) input.style.display = this.value === 'other-rare' ? 'block' : 'none';
-      });
-    }
-
-    // Generic "other" checkboxes list (safe guards — some ids might not exist)
-    const otherCheckboxes = [
-      { checkbox: 'heds-other', input: 'heds-other-input' },
-      { checkbox: 'heds-barrier-other', input: 'heds-barrier-other-input' },
-      { checkbox: 'heds-comorbid-other', input: 'heds-comorbid-other-input' },
-      { checkbox: 'hsd-other', input: 'hsd-other-input' },
-      { checkbox: 'hsd-barrier-other', input: 'hsd-barrier-other-input' },
-      { checkbox: 'ceds-other', input: 'ceds-other-input' },
-      { checkbox: 'ceds-surg-other', input: 'ceds-surg-other-input' },
-      { checkbox: 'veds-other', input: 'veds-other-input' },
-      { checkbox: 'veds-comp-other', input: 'veds-comp-other-input' },
-      { checkbox: 'keds-other', input: 'keds-other-input' },
-      { checkbox: 'aeds-other', input: 'aeds-other-input' },
-      { checkbox: 'aeds-hip-other', input: 'aeds-hip-other-input' },
-      { checkbox: 'deds-other', input: 'deds-other-input' },
-      { checkbox: 'bcs-other', input: 'bcs-other-input' },
-      { checkbox: 'bcs-eye-other', input: 'bcs-eye-other-input' },
-      { checkbox: 'mceds-other', input: 'mceds-other-input' },
-      { checkbox: 'meds-other', input: 'meds-other-input' },
-      { checkbox: 'speds-other', input: 'speds-other-input' },
-      { checkbox: 'speds-skel-other', input: 'speds-skel-other-input' },
-      { checkbox: 'other-chal-other', input: 'other-chal-other-input' },
-      { checkbox: 'susp-other', input: 'susp-other-input' },
-      { checkbox: 'susp-bar-other', input: 'susp-bar-other-input' },
-      { checkbox: 'trigger-other', input: 'trigger-other-input' },
-      { checkbox: 'reason-other', input: 'reason-other-input' }
-    ];
-
-    otherCheckboxes.forEach(item => {
-      const cb = safeId(item.checkbox);
-      const inp = safeId(item.input);
-      if (cb && inp) {
-        cb.addEventListener('change', function() {
-          inp.style.display = this.checked ? 'block' : 'none';
+      // If top symptoms are visible, ensure uniqueness
+      const visibleTop = selectedSymptoms.length;
+      if(visibleTop > 0){
+        // only check selects that are displayed (top1..top3)
+        const chosen = [];
+        let duplicates = false;
+        topSelects.forEach((s, idx) => {
+          if(s.style.display !== 'none'){
+            const val = s.value;
+            if(val){
+              if(chosen.includes(val)) duplicates = true;
+              chosen.push(val);
+            }
+          }
         });
-      }
-    });
-
-    // Subtype module display (also safe-guarded if elements exist)
-    if (diagnosisSelect) {
-      diagnosisSelect.addEventListener('change', function() {
-        document.querySelectorAll('.subtype-module').forEach(m => m.classList.remove('active'));
-        const selectedValue = this.value;
-        if (selectedValue) {
-          const moduleId = 'module-' + selectedValue;
-          const mod = safeId(moduleId);
-          if (mod) mod.classList.add('active');
+        if(duplicates){
+          showError('err-topSymptoms', 'Top symptoms selections must be unique.');
+          ok = false;
         }
+      }
+
+      return ok;
+    }
+
+    function collectFormData(){
+      const data = {};
+
+      // DEMOGRAPHICS
+      data.ageRange = document.querySelector('input[name="ageRange"]:checked')?.value || null;
+      data.race = getCheckedValues('race');
+      data.raceSelf = document.getElementById('raceSelfInput')?.value || '';
+      data.gender = document.querySelector('input[name="gender"]:checked')?.value || null;
+      data.genderSelf = document.getElementById('genderSelfInput')?.value || '';
+      data.orientation = document.querySelector('input[name="orientation"]:checked')?.value || null;
+      data.orientationSelf = document.getElementById('orientationSelfInput')?.value || '';
+      data.geographic = document.getElementById('geo')?.value || null;
+
+      // DIAGNOSTIC JOURNEY
+      data.edsType = edsType.value || null;
+      if(subtypeModule.style.display !== 'none'){
+        data.subtype = {
+          sub_symptoms: getCheckedValues('sub_symptom'),
+          subsymOther: document.getElementById('subsymOther')?.value || '',
+          complications: form.elements['sub_complications']?.value || '',
+          diagnosticBarriers: form.elements['sub_barriers']?.value || '',
+          stigmaExperiences: form.elements['sub_stigma']?.value || '',
+          accessBarriers: form.elements['sub_access']?.value || '',
+          onset: (document.querySelector('input[name="sub_onset"]:checked')?.value) || ''
+        };
+      }
+
+      data.ageSymptoms = form.elements['ageSymptoms']?.value || null;
+      data.ageDiagnosed = form.elements['ageDiagnosed']?.value || '';
+      data.cliniciansBefore = form.elements['cliniciansBefore']?.value || '';
+      data.attributed = document.querySelector('input[name="attributed"]:checked')?.value || '';
+      data.identityAffect = document.querySelector('input[name="identityAffect"]:checked')?.value || '';
+      data.triggers = getCheckedValues('triggers');
+      data.triggerOther = document.getElementById('triggerOtherInput')?.value || '';
+      data.ledToDiagnosis = getCheckedValues('ledToDx');
+      data.ledOther = document.getElementById('ledOtherInput')?.value || '';
+      data.diagnosticStory = document.getElementById('diagnosticStory')?.value || '';
+
+      // SYMPTOMS & IMPACT
+      const symptoms = getCheckedValues('symptom');
+      data.symptoms = symptoms.map(sym => {
+        const idSafe = sym.replace(/\s+/g,'_').replace(/[^\w_-]/g,'');
+        const severity = document.querySelector(`input[name="severity_${idSafe}"]:checked`)?.value || null;
+        return { name: sym, severity: severity };
       });
-    }
-  }
+      data.mobilityAids = form.elements['mobilityAids']?.value || '';
+      data.treatedDifferently = document.querySelector('input[name="treatedDifferently"]:checked')?.value || '';
+      data.treatedDifferentlyDetails = document.getElementById('treatedDiffDetails')?.value || '';
+      data.visibility = document.querySelector('input[name="visibility"]:checked')?.value || '';
+      data.missedDays = form.elements['missedDays']?.value || '';
+      data.adl = document.querySelector('input[name="adl"]:checked')?.value || '';
 
-  // ==================== DATA STORAGE ====================
-  class EDSDataStore {
-    constructor() {
-      this.storageKey = 'eds_biosocial_responses';
-      this.init();
-    }
-    async init() {
-      try {
-        const existing = await this.getAllResponses();
-        if (!existing || existing.length === 0) {
-          await window.storage.set(this.storageKey, JSON.stringify([]), true);
-        }
-      } catch (error) {
-        console.log('Storage initialization:', error);
-      }
-    }
-    async addResponse(response) {
-      try {
-        const responses = await this.getAllResponses();
-        response.id = Date.now().toString();
-        response.timestamp = new Date().toISOString();
-        responses.push(response);
-        await window.storage.set(this.storageKey, JSON.stringify(responses), true);
-        return true;
-      } catch (error) {
-        console.error('Storage error:', error);
-        return false;
-      }
-    }
-    async getAllResponses() {
-      try {
-        const result = await window.storage.get(this.storageKey, true);
-        return result ? JSON.parse(result.value) : [];
-      } catch (error) {
-        console.log('Retrieval note:', error);
-        return [];
-      }
-    }
-    async getFilteredResponses(filters) {
-      const responses = await this.getAllResponses();
-      return responses.filter(response => {
-        if (filters.diagnosis !== 'all' && response.diagnosis !== filters.diagnosis) return false;
-        if (filters.gender !== 'all' && response.gender !== filters.gender) return false;
-        if (filters.age !== 'all' && response.age_range !== filters.age) return false;
-        return true;
+      // top symptoms ranked
+      data.topSymptoms = [];
+      topSelects.forEach(s => {
+        if(s.style.display !== 'none' && s.value) data.topSymptoms.push(s.value);
       });
-    }
-    // Stats computed from a full responses array
-    static computeStatsFromArray(responses) {
-      if (!responses || responses.length === 0) return { totalResponses: 0, avgDelay: 0, dismissedPercent: 0, anxietyPercent: 0 };
-      const totalResponses = responses.length;
-      const delays = responses.filter(r => r.symptom_onset_age && r.diagnosis_age).map(r => parseInt(r.diagnosis_age) - parseInt(r.symptom_onset_age));
-      const avgDelay = delays.length > 0 ? Math.round(delays.reduce((a,b)=>a+b,0)/delays.length) : 0;
-      const dismissed = responses.filter(r => {
-        // many form fields referencing dismissal vary by name; look for a generic "clinicians_dismissed" or dismissal_types presence
-        return (r.clinicians_dismissed && r.clinicians_dismissed !== '0') || (r.dismissal_types && Array.isArray(r.dismissal_types) && r.dismissal_types.length > 0 && !r.dismissal_types.includes('none'));
-      }).length;
-      const dismissedPercent = Math.round((dismissed/totalResponses)*100);
-      const toldAnxiety = responses.filter(r => {
-        // see names used in form: some radio groups might be recorded under other names; check common possibilities
-        return (r.told_anxiety === 'yes-frequently' || r.told_anxiety === 'yes-occasionally') || (r.dismissal_types && r.dismissal_types.includes('anxiety'));
-      }).length;
-      const anxietyPercent = Math.round((toldAnxiety/totalResponses)*100);
-      return { totalResponses, avgDelay, dismissedPercent, anxietyPercent };
-    }
-  }
 
-  const dataStore = new EDSDataStore();
+      // SOCIAL
+      data.distance = form.elements['distance']?.value || '';
+      data.specialistsLastYear = form.elements['specialistsLastYear']?.value || '';
+      data.oopc = form.elements['oopc']?.value || '';
+      data.hospitalizations = form.elements['hospitalizations']?.value || '';
+      data.insurance = getCheckedValues('insurance');
 
-  // ==================== FORM HANDLING ====================
-  const form = document.getElementById('eds-survey-form');
-  if (form) {
-    form.addEventListener('submit', async (e) => {
+      // STIGMA
+      data.dismissalTypes = getCheckedValues('dismissal');
+      data.medicalMistrust = document.querySelector('input[name="medicalMistrust"]:checked')?.value || '';
+      data.accompaniment = form.elements['accompaniment']?.value || '';
+      data.refusedTesting = document.querySelector('input[name="refusedTesting"]:checked')?.value || '';
+      data.avoidedER = document.querySelector('input[name="avoidedER"]:checked')?.value || '';
+
+      // INTERSECTIONAL
+      data.raceAffectDx = document.querySelector('input[name="raceAffectDx"]:checked')?.value || '';
+      data.intersectionalBarriers = document.getElementById('intersectionalBarriers')?.value || '';
+
+      // COMMUNITY
+      data.copingStrategies = getCheckedValues('coping');
+      data.copingOther = document.getElementById('copingOtherInput')?.value || '';
+      data.anesthesiaComplications = getCheckedValues('anesthesia');
+
+      // FINAL
+      data.wishDoctors = document.getElementById('wishDoctors')?.value || '';
+      data.anythingElse = document.getElementById('anythingElse')?.value || '';
+
+      // Metadata
+      data.submittedAt = new Date().toISOString();
+      data.client = {
+        userAgent: navigator.userAgent,
+        locale: navigator.language || null
+      };
+
+      return data;
+    }
+
+    form.addEventListener('submit', function(e){
       e.preventDefault();
-      const submitBtn = safeId('submit-btn');
-      if (submitBtn) submitBtn.disabled = true;
+      // validate
+      if(!validate()){
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+      const payload = collectFormData();
 
-      const payload = serializeForm(form);
+      // Display a success message and the JSON summary (for testing)
+      const result = document.getElementById('submissionResult');
+      result.innerHTML = '<div class="notice"><strong>Thank you.</strong> Your responses have been collected locally. In production this payload will be sent securely to Supabase.</div><div style="margin-top:0.5rem;" class="summary">' + JSON.stringify(payload, null, 2) + '</div>';
 
-      // Add minimal server-side safe transforms (e.g., convert empty strings to null where helpful)
-      Object.keys(payload).forEach(k => {
-        if (payload[k] === '') payload[k] = null;
-      });
+      // Debug: log to console
+      console.log('Collected survey payload:', payload);
 
-      const ok = await dataStore.addResponse(payload);
-      if (ok) {
-        // Show success message
-        const sm = safeId('success-message');
-        if (sm) {
-          sm.style.display = 'block';
-          setTimeout(() => { sm.style.display = 'none'; }, 5000);
+      // TODO (Supabase): Insert Supabase client call here to save `payload`.
+      // Example (pseudocode):
+      // const { data, error } = await supabase.from('eds_survey').insert([payload])
+      // handle result / error
+      //
+      // IMPORTANT: When adding Supabase, ensure secure environment variables are used on server-side or via edge functions.
+      //
+      // Note: This frontend currently only collects and prepares the object. Integrate database/storage and consent flows before storing real data.
+
+      // Optionally, reset form after submission:
+      // form.reset();
+      // rebuildSeverityFields();
+    });
+
+    // Reset button with confirmation
+    const resetBtn = document.getElementById('resetBtn');
+    resetBtn.addEventListener('click', () => {
+      if(confirm('Reset the survey? All current answers will be cleared.')){
+        form.reset();
+        rebuildSeverityFields();
+        populateTopSymptoms([]);
+        // hide optional conditional fields
+        raceSelfText.style.display = 'none';
+        genderSelfText.style.display = 'none';
+        orientationSelfText.style.display = 'none';
+        triggerOtherText.style.display = 'none';
+        ledOtherText.style.display = 'none';
+        subsymOtherText.style.display = 'none';
+        copingOtherText.style.display = 'none';
+        treatedDiffText.style.display = 'none';
+        subtypeModule.style.display = 'none';
+        document.getElementById('submissionResult').innerHTML = '';
+        // clear errors
+        ['err-age','err-race','err-gender','err-edsType','err-ageSymptoms','err-symptoms','err-topSymptoms'].forEach(id => showError(id, ''));
+      }
+    });
+
+    // Ensure top symptoms update if symptoms change (in case of manual changes)
+    symptomCheckboxes.forEach(cb => cb.addEventListener('change', () => {
+      const selected = symptomCheckboxes.filter(c=>c.checked).map(c=>c.value);
+      populateTopSymptoms(selected);
+    }));
+
+    // Accessibility: allow keyboard toggling for checkbox grids
+    document.querySelectorAll('.checkbox-grid input, .inline input').forEach(el => {
+      el.addEventListener('keydown', (ev) => {
+        if(ev.key === ' '){
+          ev.preventDefault();
+          el.checked = !el.checked;
+          el.dispatchEvent(new Event('change'));
         }
-        // Update stats and visualization
-        await refreshStatsAndVisualization();
-        // Optionally reset form (we won't fully reset to preserve accessibility; just clear non-required free text)
-        // form.reset();
-      } else {
-        alert('There was an error saving your response. Please try again.');
-      }
-      if (submitBtn) submitBtn.disabled = false;
-    });
-  }
-
-  // ==================== TABS ====================
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      this.classList.add('active');
-      const tab = this.dataset.tab;
-      document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
-      const showing = safeId(tab + '-tab');
-      if (showing) showing.classList.add('active');
-
-      // when switching to visualization, ensure stats are refreshed and canvas resized
-      if (tab === 'visualization') {
-        refreshStatsAndVisualization();
-      }
-    });
-  });
-
-  // ==================== STATS & VISUALIZATION ====================
-  async function refreshStatsAndVisualization() {
-    // If the visualization tab filters are set, use filtered responses
-    const filters = {
-      diagnosis: (safeId('filter-diagnosis') || {value:'all'}).value || 'all',
-      gender: (safeId('filter-gender') || {value:'all'}).value || 'all',
-      age: (safeId('filter-age') || {value:'all'}).value || 'all'
-    };
-    const responses = await dataStore.getFilteredResponses(filters);
-    const stats = EDSDataStore.computeStatsFromArray(responses);
-
-    // Update stat cards
-    const elTotal = safeId('stat-total');
-    const elDelay = safeId('stat-delay');
-    const elDismissed = safeId('stat-dismissed');
-    const elAnxiety = safeId('stat-anxiety');
-    if (elTotal) elTotal.textContent = stats.totalResponses;
-    if (elDelay) elDelay.textContent = stats.avgDelay + ' yrs';
-    if (elDismissed) elDismissed.textContent = stats.dismissedPercent + '%';
-    if (elAnxiety) elAnxiety.textContent = stats.anxietyPercent + '%';
-
-    // Draw a simple frequency-based "network" visualization on canvas:
-    drawSimpleNetwork(responses);
-  }
-
-  // Very simple visualization: counts of core_symptoms (if present) -> draw proportional circles labeled.
-  function drawSimpleNetwork(responses) {
-    const canvas = safeId('network-canvas');
-    if (!canvas) return;
-    canvas.width = canvas.clientWidth * devicePixelRatio;
-    canvas.height = canvas.clientHeight * devicePixelRatio;
-    const ctx = canvas.getContext('2d');
-    ctx.scale(devicePixelRatio, devicePixelRatio);
-    // Clear
-    ctx.clearRect(0,0,canvas.clientWidth, canvas.clientHeight);
-
-    // Build frequency map for some common fields (core_symptoms is a checkbox group in the form)
-    const freq = {};
-    responses.forEach(r => {
-      if (r.core_symptoms && Array.isArray(r.core_symptoms)) {
-        r.core_symptoms.forEach(s => {
-          if (!freq[s]) freq[s] = 0;
-          freq[s]++;
-        });
-      }
+      });
     });
 
-    const entries = Object.entries(freq).sort((a,b)=>b[1]-a[1]);
-    if (entries.length === 0) {
-      // Draw placeholder message
-      ctx.fillStyle = '#666';
-      ctx.font = '16px Arial';
-      ctx.fillText('No symptom frequency data to visualize yet.', 20, 40);
-      return;
-    }
-
-    // Draw circles in rows
-    const padding = 20;
-    const maxRadius = 60;
-    const maxCount = entries[0][1];
-    let x = padding;
-    let y = padding + maxRadius;
-    const lineHeight = maxRadius * 2 + 20;
-    ctx.font = '14px Arial';
-    entries.forEach(([label, count], idx) => {
-      const radius = Math.max(12, Math.round((count / maxCount) * maxRadius));
-      // pick color based on label category heuristically
-      let color = '#667eea';
-      if (label.includes('pain') || label.includes('fatigue')) color = '#f093fb';
-      if (label.includes('bruis') || label.includes('bruise')) color = '#4facfe';
-      if (label.includes('stigma') || label.includes('dismiss')) color = '#43e97b';
-
-      // wrap to next line when exceeding width
-      if (x + radius*2 + padding > canvas.clientWidth) {
-        x = padding;
-        y += lineHeight;
-      }
-
-      ctx.beginPath();
-      ctx.fillStyle = color;
-      ctx.globalAlpha = 0.95;
-      ctx.arc(x + radius, y, radius, 0, Math.PI*2);
-      ctx.fill();
-      ctx.globalAlpha = 1;
-
-      // label
-      ctx.fillStyle = '#fff';
-      ctx.textAlign = 'center';
-      ctx.fillText(count, x + radius, y + 6);
-      ctx.fillStyle = '#333';
-      ctx.textAlign = 'left';
-      ctx.fillText(' ' + label, x + radius*2 + 8, y + 6);
-
-      x += radius*2 + 160; // spacing
-    });
-  }
-
-  // Filters -> refresh when changed
-  ['filter-diagnosis','filter-gender','filter-age'].forEach(id => {
-    const el = safeId(id);
-    if (el) el.addEventListener('change', refreshStatsAndVisualization);
-  });
-
-  // Initialize UI behaviors
-  (function init() {
-    setupOtherInputs();
-    // initial stats refresh after a small delay to allow dataStore init
-    setTimeout(refreshStatsAndVisualization, 200);
-    // handle window resize -> redraw canvas
-    window.addEventListener('resize', () => {
-      // throttle
-      clearTimeout(window._vis_resize);
-      window._vis_resize = setTimeout(refreshStatsAndVisualization, 150);
-    });
-  })();
+    // Final note for developers:
+    // This file provides a complete frontend for collecting survey responses.
+    // To persist data, integrate Supabase (or other secure backend) where indicated above.
+    // When integrating, follow security best practices: authentication, secure keys, user consent, and PII protections.
   </script>
 </body>
 </html>
