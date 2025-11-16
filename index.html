@@ -1,0 +1,465 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>EDS Biosocial Research Platform (Netlify + Supabase + D3)</title>
+
+  <!-- D3 -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    /* Minimal styling kept from your original UI for familiarity */
+    body { font-family: "Segoe UI", Tahoma, Arial, sans-serif; margin: 18px; background: #f6f8fb; color: #222; }
+    .container { max-width: 1200px; margin: 0 auto; }
+    header { background:white; padding:18px; border-radius:12px; box-shadow: 0 6px 18px rgba(20,20,40,.06); margin-bottom:18px; }
+    .tab-btn { cursor:pointer; padding:10px 14px; border-radius:8px; border:0; background:#fff; box-shadow: 0 4px 10px rgba(0,0,0,.03); margin-right:8px; }
+    .tab-btn.active { background: linear-gradient(90deg,#667eea,#764ba2); color:#fff; }
+    form { background: white; padding:18px; border-radius:12px; box-shadow: 0 6px 18px rgba(20,20,40,.06); }
+    .form-group { margin-bottom:14px; }
+    label { display:block; font-weight:600; margin-bottom:6px; font-size:0.95rem; }
+    input[type="text"], input[type="number"], select, textarea { width:100%; padding:10px; border-radius:8px; border:1px solid #e6e9ef; }
+    .submit-btn { background: linear-gradient(135deg,#667eea,#764ba2); color:#fff; padding:12px 18px; border-radius:10px; border:0; font-weight:700; cursor:pointer; }
+    .stats { display:flex; gap:12px; margin:12px 0 18px; flex-wrap:wrap; }
+    .stat { background:#fff; padding:12px 16px; border-radius:10px; box-shadow:0 4px 14px rgba(0,0,0,.04); min-width:140px; }
+    #viz { background:#fff; border-radius:12px; padding:12px; height:520px; box-shadow:0 6px 18px rgba(20,20,40,.05); }
+    #tooltip { position:absolute; pointer-events:none; background:#111; color:#fff; padding:8px 10px; border-radius:6px; font-size:13px; display:none; }
+    .filter-row { display:flex; gap:12px; margin-bottom:12px; flex-wrap:wrap; align-items:end; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>EDS Biosocial Research Platform</h1>
+      <p style="margin-top:6px; color:#555">Now using Netlify Functions + Supabase for storage and D3.js for the network visualization.</p>
+    </header>
+
+    <div style="margin-bottom:12px;">
+      <button class="tab-btn active" data-tab="survey">Take Survey</button>
+      <button class="tab-btn" data-tab="visualization">Live Visualization</button>
+      <button class="tab-btn" data-tab="about">About</button>
+    </div>
+
+    <div id="survey" class="tab-panel">
+      <form id="eds-survey-form" aria-label="EDS survey">
+        <div class="form-group">
+          <label>Age Range</label>
+          <select name="age_range" required>
+            <option value="">Select...</option>
+            <option value="18-25">18-25</option>
+            <option value="26-35">26-35</option>
+            <option value="36-45">36-45</option>
+            <option value="46-55">46-55</option>
+            <option value="56-65">56-65</option>
+            <option value="66+">66+</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Gender Identity</label>
+          <select name="gender" required>
+            <option value="">Select...</option>
+            <option value="woman">Woman</option>
+            <option value="man">Man</option>
+            <option value="nonbinary">Non-binary</option>
+            <option value="self-describe">Self-describe</option>
+            <option value="no-answer">Prefer not to answer</option>
+          </select>
+          <input type="text" name="gender_self_describe" placeholder="If self-describe..." style="margin-top:8px; display:none;" />
+        </div>
+
+        <div class="form-group">
+          <label>Country</label>
+          <select name="country" required>
+            <option value="">Select...</option>
+            <option value="us">United States</option>
+            <option value="canada">Canada</option>
+            <option value="other">Other</option>
+          </select>
+          <input type="text" name="country_other" placeholder="Please specify country..." style="margin-top:8px; display:none;" />
+        </div>
+
+        <div class="form-group">
+          <label>Current Diagnosis</label>
+          <select name="diagnosis" required>
+            <option value="">Select...</option>
+            <option value="heds">hEDS</option>
+            <option value="hsd">HSD</option>
+            <option value="ceds">cEDS</option>
+            <option value="veds">vEDS</option>
+            <option value="suspected">Suspected</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Age when symptoms began</label>
+          <input type="number" name="symptom_onset_age" min="0" max="120" required />
+        </div>
+
+        <div class="form-group">
+          <label>Age when formally diagnosed (if applicable)</label>
+          <input type="number" name="diagnosis_age" min="0" max="120" />
+        </div>
+
+        <!-- Example checkbox symptom group. You can keep your full form fields; keep names consistent. -->
+        <div class="form-group">
+          <label>Core Symptoms (check all that apply)</label>
+          <div>
+            <label><input type="checkbox" name="core_symptoms" value="joint_pain" /> Joint pain</label>
+            <label><input type="checkbox" name="core_symptoms" value="fatigue" /> Fatigue</label>
+            <label><input type="checkbox" name="core_symptoms" value="bruising" /> Easy bruising</label>
+            <label><input type="checkbox" name="core_symptoms" value="autonomic" /> Autonomic symptoms</label>
+            <label><input type="checkbox" name="core_symptoms" value="other_symptom" id="sym-other" /> Other</label>
+          </div>
+          <input type="text" name="core_symptoms_other" placeholder="Other symptom..." style="margin-top:8px; display:none;" />
+        </div>
+
+        <div style="display:flex; gap:8px; align-items:center;">
+          <button type="submit" class="submit-btn">Submit Your Response</button>
+          <div id="submit-status" style="margin-left:12px; color:green; display:none;">Saved ✅</div>
+        </div>
+      </form>
+    </div>
+
+    <div id="visualization" class="tab-panel" style="display:none; margin-top:12px;">
+      <div class="stats">
+        <div class="stat"><div>Total Responses</div><div id="stat-total">0</div></div>
+        <div class="stat"><div>Avg Diagnostic Delay</div><div id="stat-delay">0 yrs</div></div>
+        <div class="stat"><div>Dismissed by Doctors</div><div id="stat-dismissed">0%</div></div>
+        <div class="stat"><div>Told "It's Anxiety"</div><div id="stat-anxiety">0%</div></div>
+      </div>
+
+      <div class="filter-row">
+        <div>
+          <label>Diagnosis</label>
+          <select id="filter-diagnosis"><option value="all">All</option><option value="heds">hEDS</option><option value="hsd">HSD</option><option value="ceds">cEDS</option></select>
+        </div>
+        <div>
+          <label>Gender</label>
+          <select id="filter-gender"><option value="all">All</option><option value="woman">Woman</option><option value="man">Man</option><option value="nonbinary">Non-binary</option></select>
+        </div>
+        <div>
+          <label>Age Range</label>
+          <select id="filter-age"><option value="all">All</option><option value="18-25">18-25</option><option value="26-35">26-35</option></select>
+        </div>
+        <div style="align-self: end;">
+          <button id="refresh-btn" class="tab-btn">Refresh</button>
+        </div>
+      </div>
+
+      <div id="viz"></div>
+      <div id="tooltip"></div>
+    </div>
+
+    <div id="about" class="tab-panel" style="display:none; margin-top:12px;">
+      <div style="background:#fff;padding:14px;border-radius:10px;box-shadow:0 6px 18px rgba(20,20,40,.04);">
+        <h3>About this deployment</h3>
+        <ul>
+          <li>Storage: Supabase (writes via Netlify Functions to keep keys server-side)</li>
+          <li>Visualization: D3.js force-directed co-occurrence network</li>
+          <li>Deploy: Netlify (upload this site and add the two functions in netlify/functions/)</li>
+        </ul>
+        <p style="margin-top:8px;color:#555">See the included Netlify function files and SQL in this patch for the DB table schema and environment variables to set (SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY).</p>
+      </div>
+    </div>
+  </div>
+
+<script>
+/*
+  Client-side behavior:
+   - Sends form payload to Netlify function /.netlify/functions/submit-response
+   - Requests aggregated raw responses from /.netlify/functions/get-responses
+   - Renders D3 force graph from symptom co-occurrence matrix
+*/
+
+// ========== UI TAB SWITCH =============
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const tab = btn.dataset.tab;
+    document.querySelectorAll('.tab-panel').forEach(p=>p.style.display='none');
+    document.getElementById(tab).style.display = 'block';
+    if (tab === 'visualization') renderVisualization();
+  });
+});
+
+// ========== DYNAMIC "OTHER" SHOW/HIDE ===========
+document.querySelector('select[name="gender"]').addEventListener('change', (e)=>{
+  const v = e.target.value;
+  const el = document.querySelector('input[name="gender_self_describe"]');
+  el.style.display = (v === 'self-describe') ? 'block' : 'none';
+});
+
+document.querySelector('select[name="country"]').addEventListener('change', (e)=>{
+  const v = e.target.value;
+  const el = document.querySelector('input[name="country_other"]');
+  el.style.display = (v === 'other') ? 'block' : 'none';
+});
+
+document.getElementById('sym-other').addEventListener('change', (e)=>{
+  document.querySelector('input[name="core_symptoms_other"]').style.display = e.target.checked ? 'block' : 'none';
+});
+
+// ========== FORM SERIALIZE (checkbox groups -> arrays) ==========
+function serializeForm(form) {
+  const obj = {};
+  const els = Array.from(form.elements).filter(el => el.name);
+  els.forEach(el=>{
+    const name = el.name;
+    const type = el.type;
+    if (type === 'checkbox') {
+      if (!obj[name]) obj[name] = [];
+      if (el.checked) obj[name].push(el.value);
+    } else if (type === 'radio') {
+      if (el.checked) obj[name] = el.value;
+    } else {
+      obj[name] = el.value;
+    }
+  });
+  return obj;
+}
+
+// ========== SUBMIT TO NETLIFY FUNCTION (which writes to Supabase) ==========
+const form = document.getElementById('eds-survey-form');
+form.addEventListener('submit', async (ev) => {
+  ev.preventDefault();
+  const payload = serializeForm(form);
+
+  // normalize empty strings to null for clarity
+  Object.keys(payload).forEach(k => {
+    if (payload[k] === '') payload[k] = null;
+  });
+
+  try {
+    const res = await fetch('/.netlify/functions/submit-response', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const json = await res.json();
+    if (!res.ok) throw new Error(json?.error || 'Failed to save');
+    const status = document.getElementById('submit-status');
+    status.style.display = 'inline';
+    setTimeout(()=>status.style.display='none', 4000);
+    // Optionally refresh visualization counter if on that tab
+    if (document.querySelector('#visualization').style.display !== 'none') {
+      renderVisualization();
+    }
+  } catch (err) {
+    alert('Save failed: ' + err.message);
+    console.error(err);
+  }
+});
+
+// ========== FETCH RESPONSES FROM NETLIFY FUNCTION ==========
+async function fetchResponses(filters = {}) {
+  // pass filters as query params (server function currently ignores filters and returns recent rows,
+  // but we keep filter plumbing for future enhancement)
+  const params = new URLSearchParams(filters);
+  const url = '/.netlify/functions/get-responses?' + params.toString();
+  const res = await fetch(url);
+  if (!res.ok) throw new Error('Failed to fetch responses');
+  return res.json();
+}
+
+// ========== STATS COMPUTATION ==========
+function computeStats(responses) {
+  if (!responses || responses.length === 0) return { totalResponses: 0, avgDelay: 0, dismissedPercent: 0, anxietyPercent: 0 };
+  // responses are returned as objects with a "data" field (the original payload), and created_at
+  const rows = responses.map(r => r.data || r);
+  const totalResponses = rows.length;
+  const delays = rows.filter(r => r.symptom_onset_age && r.diagnosis_age)
+                     .map(r => (parseInt(r.diagnosis_age)||0) - (parseInt(r.symptom_onset_age)||0));
+  const avgDelay = delays.length ? Math.round(delays.reduce((a,b)=>a+b,0)/delays.length) : 0;
+  const dismissed = rows.filter(r => {
+    // naive heuristic: check if there's a field called 'dismissal_types' or 'clinicians_dismissed' or a string "dismiss"
+    return (Array.isArray(r.dismissal_types) && r.dismissal_types.length) ||
+           (r.clinicians_dismissed && r.clinicians_dismissed !== '0') ||
+           (r.dismissal && r.dismissal.toString().toLowerCase().includes('dismiss')) ;
+  }).length;
+  const toldAnxiety = rows.filter(r => {
+    if (r.told_anxiety) return true;
+    if (Array.isArray(r.dismissal_types) && r.dismissal_types.includes('anxiety')) return true;
+    return false;
+  }).length;
+  const dismissedPercent = Math.round(dismissed / totalResponses * 100);
+  const anxietyPercent = Math.round(toldAnxiety / totalResponses * 100);
+  return { totalResponses, avgDelay, dismissedPercent, anxietyPercent };
+}
+
+// ========== D3 VISUALIZATION: symptom co-occurrence network ==========
+async function renderVisualization() {
+  const vizEl = document.getElementById('viz');
+  vizEl.innerHTML = ''; // clear
+  const loader = document.createElement('div'); loader.textContent = 'Loading...'; vizEl.appendChild(loader);
+
+  // read filters
+  const filters = {
+    diagnosis: document.getElementById('filter-diagnosis').value,
+    gender: document.getElementById('filter-gender').value,
+    age: document.getElementById('filter-age').value
+  };
+
+  let responses;
+  try {
+    responses = await fetchResponses(filters);
+  } catch (err) {
+    vizEl.innerHTML = 'Failed to load responses: ' + err.message;
+    return;
+  }
+
+  // compute stats and update stat cards
+  const stats = computeStats(responses);
+  document.getElementById('stat-total').textContent = stats.totalResponses;
+  document.getElementById('stat-delay').textContent = stats.avgDelay + ' yrs';
+  document.getElementById('stat-dismissed').textContent = stats.dismissedPercent + '%';
+  document.getElementById('stat-anxiety').textContent = stats.anxietyPercent + '%';
+
+  // build frequency and co-occurrence map for "core_symptoms" checkbox group
+  const rows = responses.map(r => r.data || r);
+  const symptomCounts = {}; // {symptom: count}
+  const cooccurrence = {}; // {'a|b': count}
+  rows.forEach(r => {
+    const arr = Array.isArray(r.core_symptoms) ? r.core_symptoms.slice() : [];
+    // include the 'other' free-text if present as separate token
+    if (!arr.length && r.core_symptoms_other) arr.push(r.core_symptoms_other);
+    // dedupe per row
+    const uniq = Array.from(new Set(arr.filter(Boolean)));
+    uniq.forEach(s => symptomCounts[s] = (symptomCounts[s] || 0) + 1);
+    for (let i=0;i<uniq.length;i++){
+      for (let j=i+1;j<uniq.length;j++){
+        const a = uniq[i], b = uniq[j];
+        const key = a < b ? a + '||' + b : b + '||' + a;
+        cooccurrence[key] = (cooccurrence[key] || 0) + 1;
+      }
+    }
+  });
+
+  // if no symptoms present, show message
+  const symptomEntries = Object.entries(symptomCounts).sort((a,b)=>b[1]-a[1]);
+  if (symptomEntries.length === 0) {
+    vizEl.innerHTML = '<div style="padding:18px;color:#666">No symptom data to visualize yet.</div>';
+    return;
+  }
+
+  // select top N symptoms to keep graph readable
+  const TOP_N = 24;
+  const topSymptoms = symptomEntries.slice(0,TOP_N).map(e=>e[0]);
+  const nodes = topSymptoms.map((s,i)=>({ id: s, count: symptomCounts[s] || 1 }));
+  const links = [];
+  Object.entries(cooccurrence).forEach(([k,v])=>{
+    const [a,b] = k.split('||');
+    if (topSymptoms.includes(a) && topSymptoms.includes(b)) {
+      links.push({ source: a, target: b, value: v });
+    }
+  });
+
+  // D3 force simulation drawing
+  vizEl.innerHTML = '';
+  const width = vizEl.clientWidth || 960;
+  const height = vizEl.clientHeight || 520;
+  const svg = d3.select(vizEl).append('svg').attr('width', '100%').attr('height', height)
+    .call(d3.zoom().on('zoom', (event) => svgGroup.attr('transform', event.transform)));
+
+  const svgGroup = svg.append('g');
+
+  // scale for node radius
+  const maxCount = d3.max(nodes, d => d.count);
+  const rScale = d3.scaleSqrt().domain([1, maxCount]).range([6, 36]);
+
+  // link width scale
+  const maxLink = d3.max(links, l => l.value) || 1;
+  const linkScale = d3.scaleLinear().domain([1, maxLink]).range([1, 6]);
+
+  const link = svgGroup.append('g')
+    .attr('stroke', '#bbb')
+    .selectAll('line')
+    .data(links)
+    .join('line')
+      .attr('stroke-width', d => linkScale(d.value))
+      .attr('stroke-opacity', 0.8);
+
+  const node = svgGroup.append('g')
+    .selectAll('g')
+    .data(nodes)
+    .join('g')
+      .call(drag(simulation));
+
+  node.append('circle')
+      .attr('r', d => rScale(d.count))
+      .attr('fill', d => colorForLabel(d.id))
+      .attr('stroke', '#fff')
+      .attr('stroke-width', 1.2)
+      .on('mouseover', (event, d) => showTooltip(event, `${d.id} — ${d.count} responses`))
+      .on('mouseout', hideTooltip);
+
+  node.append('text')
+      .text(d => d.id)
+      .attr('x', d => rScale(d.count) + 8)
+      .attr('y', 4)
+      .style('font-size', '12px');
+
+  // simulation
+  const simulation = d3.forceSimulation(nodes)
+    .force('link', d3.forceLink(links).id(d => d.id).distance(d => 120 - Math.min(80, (d.value || 0) * 4)))
+    .force('charge', d3.forceManyBody().strength(-220))
+    .force('center', d3.forceCenter(width / 2, height / 2))
+    .on('tick', ticked);
+
+  function ticked() {
+    link
+      .attr('x1', d => d.source.x)
+      .attr('y1', d => d.source.y)
+      .attr('x2', d => d.target.x)
+      .attr('y2', d => d.target.y);
+    node
+      .attr('transform', d => `translate(${d.x},${d.y})`);
+  }
+
+  function drag(sim) {
+    function started(event, d) {
+      if (!event.active) sim.alphaTarget(0.3).restart();
+      d.fx = d.x; d.fy = d.y;
+    }
+    function dragged(event, d) {
+      d.fx = event.x; d.fy = event.y;
+    }
+    function ended(event, d) {
+      if (!event.active) sim.alphaTarget(0);
+      d.fx = null; d.fy = null;
+    }
+    return d3.drag().on('start', started).on('drag', dragged).on('end', ended);
+  }
+
+  // tooltip helpers
+  const tip = document.getElementById('tooltip');
+  function showTooltip(event, html) {
+    tip.style.display = 'block';
+    tip.innerHTML = html;
+    const rect = vizEl.getBoundingClientRect();
+    tip.style.left = (event.clientX - rect.left + 12) + 'px';
+    tip.style.top = (event.clientY - rect.top + 12) + 'px';
+  }
+  function hideTooltip() { tip.style.display = 'none'; }
+
+  function colorForLabel(label) {
+    // simple deterministic color hash
+    const colors = ['#667eea','#f093fb','#4facfe','#43e97b','#fa709a','#feca57'];
+    let h = 0;
+    for (let i=0;i<label.length;i++) h = (h << 5) - h + label.charCodeAt(i);
+    return colors[Math.abs(h) % colors.length];
+  }
+}
+
+// wire refresh button and filters
+document.getElementById('refresh-btn').addEventListener('click', renderVisualization);
+['filter-diagnosis','filter-gender','filter-age'].forEach(id => {
+  const el = document.getElementById(id);
+  el && el.addEventListener('change', () => { /* no-op; press Refresh to fetch */ });
+});
+
+// initial small render
+// (we don't auto-load visualization until user switches tab to avoid unnecessary calls)
+</script>
+</body>
+</html>
